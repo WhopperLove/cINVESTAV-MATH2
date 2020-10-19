@@ -35,4 +35,4 @@ const config = {
     apiKey: process.env.ETHERSCAN_API_KEY
   },
 };
-export default
+export default config;
