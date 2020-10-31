@@ -66,4 +66,33 @@ contract ERC1155Tradable is ERC1155, IERC1155Tradable, OwnableAndRoles {
   }
 
   /**
-   * @dev Returns the total quantit
+   * @dev Returns the total quantity for a token ID
+   * @param _id uint256 ID of the token to query
+   * @return amount of token in existence
+   */
+  function totalSupply(uint256 _id) public view override returns (uint256) {
+    return tokenSupply[_id];
+  }
+
+  /**
+   * @dev Returns the max quantity for a token ID
+   * @param _id uint256 ID of the token to query
+   * @return amount of token in existence
+   */
+  function maxSupply(uint256 _id) public view override returns (uint256) {
+    return tokenMaxSupply[_id];
+  }
+
+  /**
+   * @dev Creates a new token type and assigns _initialSupply to an address
+   * @param _maxSupply max supply allowed
+   * @param _initialSupply Optional amount to supply the first owner
+   * @param _data Optional data to pass if receiver is contract
+   * @return tokenId The newly created token ID
+   */
+  function create(
+    uint256 _maxSupply,
+    uint256 _initialSupply,
+    bytes calldata _data
+  ) external override onlyCreator returns (uint256 tokenId) {
+ 
