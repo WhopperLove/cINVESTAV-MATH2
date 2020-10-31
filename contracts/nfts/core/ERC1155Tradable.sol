@@ -121,4 +121,32 @@ contract ERC1155Tradable is ERC1155, IERC1155Tradable, OwnableAndRoles {
   ) external override onlyMinter {
     require(tokenSupply[_id] < tokenMaxSupply[_id], "ERC1155Tradable#mint: Max supply reached");
     _mint(_to, _id, _quantity, _data);
-    tokenSupply[_id] = tokenSupply[_id].ad
+    tokenSupply[_id] = tokenSupply[_id].add(_quantity);
+  }
+
+  /**
+   * Override isApprovedForAll to allow user's OpenSea proxy accounts to enable gas-free listings.
+   */
+  function isApprovedForAll(address _owner, address _operator) public view override returns (bool isOperator) {
+    // Allows OpenSea proxy contract for easy trading.
+    ProxyRegistry proxyRegistry = ProxyRegistry(proxyRegistryAddress);
+    if (address(proxyRegistry.proxies(_owner)) == _operator) {
+      return true;
+    }
+
+    return super.isApprovedForAll(_owner, _operator);
+  }
+
+  /**
+   * @dev Returns whether the specified token exists by checking to see if it has a creator
+   * @param _id uint256 ID of the token to query the existence of
+   * @return bool whether the token exists
+   */
+  function exists(uint256 _id) public view override returns (bool) {
+    return creators[_id] != address(0);
+  }
+
+  /**
+   * @dev calculates the next token ID based on value of _currentTokenID
+   * @return uint256 for the next token ID
+   */
