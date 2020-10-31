@@ -95,4 +95,30 @@ contract ERC1155Tradable is ERC1155, IERC1155Tradable, OwnableAndRoles {
     uint256 _initialSupply,
     bytes calldata _data
   ) external override onlyCreator returns (uint256 tokenId) {
- 
+    require(_initialSupply <= _maxSupply, "ERC1155Tradable#create: Initial supply cannot be more than max supply");
+    uint256 _id = _getNextTokenID();
+    _incrementTokenTypeId();
+    creators[_id] = _msgSender();
+
+    if (_initialSupply != 0) _mint(_msgSender(), _id, _initialSupply, _data);
+    tokenSupply[_id] = _initialSupply;
+    tokenMaxSupply[_id] = _maxSupply;
+    return _id;
+  }
+
+  /**
+   * @dev Mints some amount of tokens to an address
+   * @param _to          Address of the future owner of the token
+   * @param _id          Token ID to mint
+   * @param _quantity    Amount of tokens to mint
+   * @param _data        Data to pass if receiver is contract
+   */
+  function mint(
+    address _to,
+    uint256 _id,
+    uint256 _quantity,
+    bytes calldata _data
+  ) external override onlyMinter {
+    require(tokenSupply[_id] < tokenMaxSupply[_id], "ERC1155Tradable#mint: Max supply reached");
+    _mint(_to, _id, _quantity, _data);
+    tokenSupply[_id] = tokenSupply[_id].ad
