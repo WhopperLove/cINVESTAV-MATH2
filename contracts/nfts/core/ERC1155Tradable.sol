@@ -30,4 +30,40 @@ contract ERC1155Tradable is ERC1155, IERC1155Tradable, OwnableAndRoles {
   string public symbol;
 
   constructor(
-    string memory _na
+    string memory _name,
+    string memory _symbol,
+    string memory _uri,
+    address _proxyRegistryAddress
+  )
+    internal
+    OwnableAndRoles()
+    ERC1155(_uri)
+  {
+    name = _name;
+    symbol = _symbol;
+    proxyRegistryAddress = _proxyRegistryAddress;
+  }
+
+  function uri(uint256 _id) public view override returns (string memory) {
+    require(exists(_id), "ERC1155Tradable#uri: NONEXISTENT_TOKEN");
+    return super.uri(_id);
+  }
+
+  /**
+   * @dev Will update the base URL of token's URI
+   * @param _newURI New base URL of token's URI
+   */
+  function setURI(string memory _newURI) public onlyAdmin {
+    _setURI(_newURI);
+  }
+
+  /**
+   * @dev Will update the usage of ID Substitution or Interpolation
+   * @param _useIdSubstitution Indicates if we should use Substitution instead of interpolation
+   */
+  function setUseUriIdSubstitution(bool _useIdSubstitution) public onlyAdmin {
+    _setUseUriIdSubstitution(_useIdSubstitution);
+  }
+
+  /**
+   * @dev Returns the total quantit
