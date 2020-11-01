@@ -150,3 +150,14 @@ contract ERC1155Tradable is ERC1155, IERC1155Tradable, OwnableAndRoles {
    * @dev calculates the next token ID based on value of _currentTokenID
    * @return uint256 for the next token ID
    */
+  function _getNextTokenID() private view returns (uint256) {
+    return _currentTokenID.add(1);
+  }
+
+  /**
+   * @dev increments the value of _currentTokenID
+   */
+  function _incrementTokenTypeId() private {
+    _currentTokenID++;
+  }
+}
