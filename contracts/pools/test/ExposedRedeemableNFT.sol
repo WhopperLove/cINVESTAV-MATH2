@@ -19,4 +19,15 @@ contract ExposedRedeemableNFT is RedeemableNFT {
     _addNFT(nftId, pointsToRedeem, strategy);
   }
 
-  function updateNFTStrategy(uint256 nftId, address
+  function updateNFTStrategy(uint256 nftId, address strategy) public {
+    _updateNFTStrategy(nftId, strategy);
+  }
+
+  function redeem(uint256 nftId) public {
+    _redeem(nftId);
+  }
+
+  function increasePoints(address account, uint256 pointsToAdd) public {
+    _increasePoints(account, pointsToAdd);
+  }
+}
