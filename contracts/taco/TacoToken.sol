@@ -150,4 +150,32 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
     }
 
     // CRUNCH VARIABLES SETTERS //
-    function setCrunchRate(uint256 _crunchRate) externa
+    function setCrunchRate(uint256 _crunchRate) external onlyOwner {
+        require(
+            _crunchRate > 0 && _crunchRate <= 10,
+            "TacoToken: crunchRate must be at least 1 and at most 10"
+        );
+        crunchRate = _crunchRate;
+    }
+
+    function setRewardForTaquero(uint256 _rewardForTaquero) external onlyOwner {
+        require(
+            _rewardForTaquero > 0 && _rewardForTaquero <= 10,
+            "TacoToken: rewardForTaquero must be at least 1 and at most 10"
+        );
+        rewardForTaquero = _rewardForTaquero;
+    }
+
+    function setTacoTuesdayRewardMultiplier(uint256 _tacoTuesdayRewardMultiplier) external onlyOwner {
+        require(
+            _tacoTuesdayRewardMultiplier > 9 && _tacoTuesdayRewardMultiplier <= 30,
+            "TacoToken: tacoTuesdayRewardMultiplier must be at least 10 and at most 30"
+        );
+        tacoTuesdayRewardMultiplier = _tacoTuesdayRewardMultiplier;
+    }
+
+    // INFORMATION OF TAQUEROS FOR UI //
+    function getInfoFor(address addr)
+        public
+        view
+    
