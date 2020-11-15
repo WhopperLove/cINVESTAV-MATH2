@@ -87,4 +87,35 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
     //===============================================//
     //                 Constructor                   //
     //===============================================//
-    constructor(uint256 initialSupply, address _uniswapFactoryAddress, 
+    constructor(uint256 initialSupply, address _uniswapFactoryAddress, address _wethToken)
+        public
+        Pausable()
+        DeflationaryERC20("Tacos", "TACO")
+    {
+        _mint(msg.sender, initialSupply);
+
+        // Initialize UniswapFactory
+        uniswapFactory = IUniswapV2Factory(_uniswapFactoryAddress);
+        WETH = IERC20(_wethToken);
+
+        // Crunch variables
+        crunchRate = 4; // Initial crunch rate set at 4%
+        rewardForTaquero = 1; // Initial reward percentage set at 1% (1% of 4%)
+        tacoTuesdayRewardMultiplier = 20; // Initial tacoTuesday multiplier set at 2x
+
+    }
+
+    //===============================================//
+    //                   Events                      //
+    //===============================================//
+    event PoolCrunched(
+        address taquero,
+        uint256 crunchedAmount,
+        uint256 newTotalSupply,
+        uint256 newUniswapPoolSupply,
+        uint256 taqueroReward,
+        uint256 timesCrunched,
+        uint256 totalTacosCrunched
+    );
+
+    //=====================
