@@ -60,4 +60,31 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
      * rewardForTaquero is defined as a percentage (e.g. 1 = 1%, 5 = 5%, 27 = 27%)
      * this is however a percentage of the crunchRate.
      */ 
-    uint256 public rewa
+    uint256 public rewardForTaquero;
+
+    /**
+     * Taco Tuesday means the reward is multiplied by a factor defined here.
+     * This percentage is defined as a multiplier with 1 decimal.
+     * (e.g. 15 = 1.5x, 10 = 1x, 2 = 2x)
+     * This is a multiplier applied to the rewardForTaquero percentage
+     * (e.g. if rewardForTaquery = 2%, and multiplier is 20 (2x), then the reward is 4%)
+     */
+    uint256 public tacoTuesdayRewardMultiplier;
+
+    struct TaqueroStats {
+        uint256 timesCrunched;
+        uint256 tacosCrunched;
+    }
+
+    mapping(address => TaqueroStats) public taquerosCrunchStats;
+    address[] public taqueros;
+
+    // UNISWAP //
+    IERC20 public WETH;
+    IUniswapV2Factory public uniswapFactory;
+    address public uniswapPool;
+
+    //===============================================//
+    //                 Constructor                   //
+    //===============================================//
+    constructor(uint256 initialSupply, address _uniswapFactoryAddress, 
