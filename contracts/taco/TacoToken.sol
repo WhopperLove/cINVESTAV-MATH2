@@ -118,4 +118,36 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
         uint256 totalTacosCrunched
     );
 
-    //=====================
+    //===============================================//
+    //                   Methods                     //
+    //===============================================//
+
+    // UNISWAP POOL //
+    function setUniswapPool() external onlyOwner {
+        require(uniswapPool == address(0), "TacoToken: pool already created");
+        uniswapPool = uniswapFactory.createPair(address(WETH), address(this));
+    }
+
+    // TOKEN TRANSFER HOOK //
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 amount
+    ) internal virtual override {
+        super._beforeTokenTransfer(from, to, amount);
+        require(
+            !paused || msg.sender == pauser,
+            "TacoToken: Cannot transfer tokens while game is paused and sender is not the Pauser."
+        );
+    }
+
+    // PAUSABLE OVERRIDE //
+    function unpause() external onlyPauser {
+        super._unpause();
+
+        // Start crunching
+        lastCrunchTime = now;
+    }
+
+    // CRUNCH VARIABLES SETTERS //
+    function setCrunchRate(uint256 _crunchRate) externa
