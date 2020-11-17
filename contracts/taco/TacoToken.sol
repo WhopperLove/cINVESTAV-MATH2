@@ -178,4 +178,38 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
     function getInfoFor(address addr)
         public
         view
-    
+        returns (
+            uint256 balance,
+            uint256 poolBalance,
+            uint256 totalSupply,
+            uint256 totalTacosCrunched,
+            uint256 crunchableTacos,
+            uint256 lastCrunchAt,
+            uint256 timesCrunched,
+            uint256 tacosCrunched,
+            bool tacoTuesday,
+            uint256 tacosCrunchRate,
+            uint256 taqueroRewardRate,
+            uint256 tacoTuesdayMultiplier
+        )
+    {
+        TaqueroStats memory taqueroStats = taquerosCrunchStats[addr];
+
+        return (
+            balanceOf(addr),
+            balanceOf(uniswapPool),
+            _totalSupply,
+            totalCrunched,
+            getCrunchAmount(),
+            lastCrunchTime,
+            taqueroStats.timesCrunched,
+            taqueroStats.tacosCrunched,
+            isTacoTuesday(),
+            crunchRate,
+            rewardForTaquero,
+            tacoTuesdayRewardMultiplier
+        );
+    }
+
+    // CRUNCH DAT POOL! //
+    functi
