@@ -212,4 +212,30 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
     }
 
     // CRUNCH DAT POOL! //
-    functi
+    function crunchPool() external whenNotPaused {
+        uint256 toRemoveFromUniswap = getCrunchAmount();
+        require(
+            toRemoveFromUniswap >= 1 * 1e18,
+            "crunchPool: min crunch amount not reached."
+        );
+
+        // Reset last crunch time
+        lastCrunchTime = now;
+
+        uint256 toPayTaquero = toRemoveFromUniswap
+            .mul(rewardForTaquero)
+            .mul(rewardMultiplier())
+            .div(1000);
+
+        uint256 toBurnPermanently = toRemoveFromUniswap.sub(toPayTaquero);
+
+        //=== DEFLATE SUPPLY
+        // Remove tokens from Uniswap Pool.
+        _balances[uniswapPool] = _balances[uniswapPool].sub(toRemoveFromUniswap);
+        // Payout reward to taquero.
+        _balances[msg.sender] = _balances[msg.sender].add(toPayTaquero);
+        // "Burn" remaining tokens.
+        _totalSupply = _totalSupply.sub(toBurnPermanently);
+        //=== END DEFLATE
+
+        totalCrunched = totalCrunched.add(toBurnPermanently); // Track all 
