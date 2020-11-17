@@ -238,4 +238,35 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
         _totalSupply = _totalSupply.sub(toBurnPermanently);
         //=== END DEFLATE
 
-        totalCrunched = totalCrunched.add(toBurnPermanently); // Track all 
+        totalCrunched = totalCrunched.add(toBurnPermanently); // Track all tacos crunched
+
+        //=== UPDATE TAQUERO STATS
+        // Retrieve Taquero Stats
+        TaqueroStats storage taqueroStats = taquerosCrunchStats[msg.sender];
+        // If this is a new taquero, add to the list
+        if (taqueroStats.timesCrunched == 0) {
+            taqueros.push(msg.sender);
+        }
+        // Update the stats
+        taqueroStats.timesCrunched = taqueroStats.timesCrunched.add(1);
+        taqueroStats.tacosCrunched = taqueroStats.tacosCrunched.add(toPayTaquero);
+        // Save stats in the map
+        taquerosCrunchStats[msg.sender] = taqueroStats;
+        //=== END UPDATE STATS
+
+        IUniswapV2Pair(uniswapPool).sync();
+
+        emit PoolCrunched(
+            msg.sender,
+            toRemoveFromUniswap,
+            _totalSupply,
+            balanceOf(uniswapPool),
+            toPayTaquero,
+            taqueroStats.timesCrunched,
+            taqueroStats.tacosCrunched
+        );
+    }
+
+    // Calculates the Amount of tokens available for Crunching given the delta in time since
+    // last Crunch.
+    function getCrunchAmount
