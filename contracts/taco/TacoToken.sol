@@ -269,4 +269,35 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
 
     // Calculates the Amount of tokens available for Crunching given the delta in time since
     // last Crunch.
-    function getCrunchAmount
+    function getCrunchAmount() public view returns (uint256) {
+        if (paused) return 0;
+
+        uint256 timeBetweenLastCrunch = now - lastCrunchTime;
+        uint256 tokensInUniswapPool = balanceOf(uniswapPool);
+        uint256 dayInSeconds = 1 days;
+        uint256 crunchAmount = (tokensInUniswapPool.mul(crunchRate).mul(timeBetweenLastCrunch))
+                .div(dayInSeconds)
+                .div(100);
+
+        return crunchAmount;
+    }
+
+    // Determines the Reward Multiplier
+    function rewardMultiplier() public view returns (uint256) {
+        // This returns a multiplier with 1 decimal. so 10 means 1.0x
+        if (isTacoTuesday()) {
+            return tacoTuesdayRewardMultiplier;
+        } else {
+            return 10;
+        }
+    }
+
+    // Is it Tuesday Today?
+    // Thank you @nanexcool
+    // https://twitter.com/nanexcool/status/1259623747339849729
+    function isTacoTuesday() public view returns (bool) {
+        uint256 day = (now / 1 days + 3) % 7;
+        return day == 1;
+    }
+
+    // Ta
