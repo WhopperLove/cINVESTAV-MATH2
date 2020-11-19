@@ -328,4 +328,7 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
         githubProof = _githubProof;
     }
 
-    f
+    function getGithubProof() external override view returns(bytes memory) {
+        return githubProof;
+    }
+}
