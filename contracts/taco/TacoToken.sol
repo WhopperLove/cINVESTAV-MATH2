@@ -300,4 +300,32 @@ contract TacoToken is DeflationaryERC20, Pausable, SocialProofable {
         return day == 1;
     }
 
-    // Ta
+    // Taquero Stats getter for Leaderboard
+    function countTaqueros() public view returns (uint256) {
+        return taqueros.length;
+    }
+
+    function getTaqueros() public view returns(address[] memory) {
+        return taqueros;
+    }
+
+    function getTaqueroStats(address _address) public view returns (uint256 timesCrunched, uint256 tacosCrunched) {
+        return (taquerosCrunchStats[_address].timesCrunched, taquerosCrunchStats[_address].tacosCrunched);
+    }
+
+    //===============================================//
+    //                Social Proof                   //
+    //===============================================//
+    function setTwitterProof(uint256 _twitterProof) external onlyOwner {
+        twitterProof = _twitterProof;
+    }
+
+    function getTwitterProof() external override view returns(uint256) {
+        return twitterProof;
+    }
+
+    function setGithubProof(bytes calldata _githubProof) external onlyOwner {
+        githubProof = _githubProof;
+    }
+
+    f
