@@ -48,4 +48,38 @@ contract TacosCrowdsale is Ownable {
     uint256 public constant CROWDSALE_START_TIME = 1596952800;
 
     // Start time 08/10/2020 @ 4:00pm (UTC)
-    uint256 public constant KARMASA
+    uint256 public constant KARMASALE_START_TIME = 1597075200;
+
+    // Start time 08/11/2020 @ 4:00pm (UTC)
+    uint256 public constant PUBLICSALE_START_TIME = 1597161600;
+
+    // End time
+    uint256 public constant CROWDSALE_END_TIME = PUBLICSALE_START_TIME + 1 days;
+
+    // Karma Membership = 200 Karma
+    uint256 public constant KARMA_MEMBERSHIP_AMOUNT = 2000000;
+
+    // Early cooks list for round 1
+    // Too many cooks? https://www.youtube.com/watch?v=QrGrOK8oZG8
+    mapping(address => bool) public cookslist;
+
+    // Contributions state
+    mapping(address => uint256) public contributions;
+
+    // Total wei raised (ETH)
+    uint256 public weiRaised;
+
+    // Flag to know if liquidity has been locked
+    bool public liquidityLocked = false;
+
+    // Pointer to the TacoToken
+    IERC20 public tacoToken;
+
+    // Pointer to the KarmaToken
+    IERC20 public karmaToken;
+
+    // How many tacos do we send per ETH contributed.
+    uint256 public tacosPerEth;
+
+    // Pointer to the UniswapRouter
+    IU
