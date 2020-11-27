@@ -133,4 +133,28 @@ contract TacosCrowdsale is Ownable {
             );
             require(
                 contributions[msg.sender] < CAP_PER_ADDRESS,
-                "Taco
+                "TacosCrowdsale: Individual cap has been filled."
+            );
+
+            // If we've passed most validations, let's get them $TACOs
+            _buyTokens(msg.sender);
+        }
+    }
+
+    /**
+     * Function to calculate how many `weiAmount` can the sender purchase
+     * based on total available cap for this round, and how many eth they've contributed.
+     *
+     * At the end of the function we refund the remaining ETH not used for purchase.
+     */
+    function _buyTokens(address beneficiary) internal {
+        // How much ETH still available for the current Round CAP
+        uint256 weiAllowanceForRound = _totalCapForCurrentRound().sub(weiRaised);
+
+        // In case there is less allowance in this cap than what was sent, cap that.
+        uint256 weiAmountForRound = weiAllowanceForRound < msg.value
+            ? weiAllowanceForRound
+            : msg.value;
+
+        // How many wei is this sender still able to get per their address CAP.
+        uint256 weiAllowanceForAddress = CAP_P
