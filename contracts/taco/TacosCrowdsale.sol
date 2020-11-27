@@ -110,4 +110,27 @@ contract TacosCrowdsale is Ownable {
 
     //===============================================//
     //                   Methods                     //
-    //===============================================
+    //===============================================//
+
+    // Main entry point for buying into the Pre-Sale. Contract Receives $ETH
+    receive() external payable {
+        // Prevent owner from buying tokens, but allow them to add pre-sale ETH to the contract for Uniswap liquidity
+        if (owner() != msg.sender) {
+            // Validations.
+            require(
+                msg.sender != address(0),
+                "TacosCrowdsale: beneficiary is the zero address"
+            );
+            require(isOpen(), "TacosCrowdsale: sale did not start yet.");
+            require(!hasEnded(), "TacosCrowdsale: sale is over.");
+            require(
+                weiRaised < _totalCapForCurrentRound(),
+                "TacosCrowdsale: The cap for the current round has been filled."
+            );
+            require(
+                _allowedInCurrentRound(msg.sender),
+                "TacosCrowdsale: Address not allowed for this round."
+            );
+            require(
+                contributions[msg.sender] < CAP_PER_ADDRESS,
+                "Taco
