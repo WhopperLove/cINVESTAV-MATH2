@@ -82,4 +82,32 @@ contract TacosCrowdsale is Ownable {
     uint256 public tacosPerEth;
 
     // Pointer to the UniswapRouter
-    IU
+    IUniswapV2Router02 internal uniswapRouter;
+
+    //===============================================//
+    //                 Constructor                   //
+    //===============================================//
+    constructor(
+        IERC20 _tacoToken,
+        IERC20 _karmaToken,
+        uint256 _tacosPerEth,
+        address _uniswapRouter
+    ) public Ownable() {
+        tacoToken = _tacoToken;
+        karmaToken = _karmaToken;
+        tacosPerEth = _tacosPerEth;
+        uniswapRouter = IUniswapV2Router02(_uniswapRouter);
+    }
+
+    //===============================================//
+    //                   Events                      //
+    //===============================================//
+    event TokenPurchase(
+        address indexed beneficiary,
+        uint256 weiAmount,
+        uint256 tokenAmount
+    );
+
+    //===============================================//
+    //                   Methods                     //
+    //===============================================
