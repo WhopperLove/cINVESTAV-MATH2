@@ -157,4 +157,28 @@ contract TacosCrowdsale is Ownable {
             : msg.value;
 
         // How many wei is this sender still able to get per their address CAP.
-        uint256 weiAllowanceForAddress = CAP_P
+        uint256 weiAllowanceForAddress = CAP_PER_ADDRESS.sub(
+            contributions[beneficiary]
+        );
+
+        // In case the allowance of this address is less than what was sent, cap that.
+        uint256 weiAmount = weiAllowanceForAddress < weiAmountForRound
+            ? weiAllowanceForAddress
+            : weiAmountForRound;
+
+        // Internal call to run the final validations, and perform the purchase.
+        _buyTokens(beneficiary, weiAmount, weiAllowanceForRound);
+
+        // Refund all unused funds.
+        uint256 refund = msg.value.sub(weiAmount);
+        if (refund > 0) {
+            payable(beneficiary).transfer(refund);
+        }
+    }
+
+    /**
+     * Function that validates the minimum wei amount, then perform the actual transfer of $TACOs
+     */
+    function _buyTokens(address beneficiary, uint256 weiAmount, uint256 weiAllowanceForRound) internal {
+        require(
+            weiAmount >= MIN_CONTRIBUTION || weiAllowanceForRound < MIN_CONTRIBUTION,
