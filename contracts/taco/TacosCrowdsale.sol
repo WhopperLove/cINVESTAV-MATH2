@@ -182,3 +182,31 @@ contract TacosCrowdsale is Ownable {
     function _buyTokens(address beneficiary, uint256 weiAmount, uint256 weiAllowanceForRound) internal {
         require(
             weiAmount >= MIN_CONTRIBUTION || weiAllowanceForRound < MIN_CONTRIBUTION,
+            "TacosCrowdsale: weiAmount is smaller than min contribution."
+        );
+
+        // Update how much wei we have raised
+        weiRaised = weiRaised.add(weiAmount);
+        // Update how much wei has this address contributed
+        contributions[beneficiary] = contributions[beneficiary].add(weiAmount);
+
+        // Calculate how many $TACOs can be bought with that wei amount
+        uint256 tokenAmount = _getTokenAmount(weiAmount);
+        // Transfer the $TACOs to the beneficiary
+        tacoToken.safeTransfer(beneficiary, tokenAmount);
+
+        // Create an event for this purchase
+        emit TokenPurchase(beneficiary, weiAmount, tokenAmount);
+    }
+
+    // Calculate how many tacos do they get given the amount of wei
+    function _getTokenAmount(uint256 weiAmount) internal view returns (uint256)
+    {
+        return weiAmount.mul(tacosPerEth);
+    }
+
+    // CONTROL FUNCTIONS
+
+    // Is the sale open now?
+    function isOpen() public view returns (bool) {
+        
