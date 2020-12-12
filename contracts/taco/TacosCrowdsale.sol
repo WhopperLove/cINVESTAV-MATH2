@@ -209,4 +209,32 @@ contract TacosCrowdsale is Ownable {
 
     // Is the sale open now?
     function isOpen() public view returns (bool) {
-        
+        return now >= CROWDSALE_START_TIME;
+    }
+
+    // Has the sale ended?
+    function hasEnded() public view returns (bool) {
+        return now >= CROWDSALE_END_TIME || weiRaised >= ROUND_3_CAP;
+    }
+
+    // Has the *Karma* sale started?
+    function karmaSaleStarted() public view returns (bool) {
+        return now >= KARMASALE_START_TIME;
+    }
+
+    // Has the *Public* sale started?
+    function publicSaleStarted() public view returns (bool) {
+        return now >= PUBLICSALE_START_TIME;
+    }
+
+    // Is the beneficiary allowed in the current Round?
+    function _allowedInCurrentRound(address beneficiary) internal view returns (bool) {
+        bool isKarmaRoundAndMember = karmaSaleStarted() && _isKarmaMember(beneficiary);
+
+        return (cookslist[beneficiary] || isKarmaRoundAndMember || publicSaleStarted());
+    }
+
+    // Checks wether the beneficiary is a Karma member.
+    // Karma membership is defined as owning 200 $KARMA
+    // Thank you KarmaDAO for getting us together.
+    fun
