@@ -237,4 +237,30 @@ contract TacosCrowdsale is Ownable {
     // Checks wether the beneficiary is a Karma member.
     // Karma membership is defined as owning 200 $KARMA
     // Thank you KarmaDAO for getting us together.
-    fun
+    function _isKarmaMember(address beneficiary) internal view returns (bool) {
+        return karmaToken.balanceOf(beneficiary) >= KARMA_MEMBERSHIP_AMOUNT;
+    }
+
+    // What's the total cap for the current round?
+    function _totalCapForCurrentRound() internal view returns (uint256) {
+        if (publicSaleStarted()) {
+            return ROUND_3_CAP;
+        } else if(karmaSaleStarted()) {
+            return ROUND_2_CAP;
+        } else { // Cooks sale
+            return ROUND_1_CAP;
+        }
+    }
+
+    // Return human-readable currentRound
+    function getCurrentRound() public view returns (string memory) {
+        if (publicSaleStarted()) return "Public";
+        if (karmaSaleStarted()) return "Karma";
+        return "Cooks";
+    }
+
+    // Set the cooks list
+    function setCooksList(address[] calldata accounts) external onlyOwner {
+        for (uint256 i = 0; i < accounts.length; i++) {
+            cookslist[accounts[i]] = true;
+ 
