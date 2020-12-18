@@ -304,4 +304,13 @@ contract TacosCrowdsale is Ownable {
         // Send the entire balance and all tokens in the contract to Uniswap LP
         tacoToken.approve(address(uniswapRouter), amountTokensForUniswap);
         uniswapRouter.addLiquidityETH{value: amountEthForUniswap}(
-            address(t
+            address(tacoToken),
+            amountTokensForUniswap,
+            amountTokensForUniswap,
+            amountEthForUniswap,
+            address(0), // burn address
+            now
+        );
+        liquidityLocked = true;
+    }
+}
