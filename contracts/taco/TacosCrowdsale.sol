@@ -281,4 +281,27 @@ contract TacosCrowdsale is Ownable {
      * 2. After liquidity is added, when tacoToken is unpaused and for 24 hours
      *      after that, no single transaction can be done for more than X amount.
      *      Forcing whales to execute more than a single transaction.
-     * 3. A Bridge Tax or just a sale tax. Everytime a whale sells their token
+     * 3. A Bridge Tax or just a sale tax. Everytime a whale sells their tokens
+     *      burn as many tokens as they are trying to sell. This would be a bit
+     *      tricky to implement, as we need to define what qualifies as a whale.
+     *
+     * For now the only implementation for future usage is making this function onlyOwner.
+     */
+    function addAndLockLiquidity() external onlyOwner {
+        require(
+            hasEnded(),
+            "TacosCrowdsale: can only send liquidity once hardcap is reached"
+        );
+
+        // How many ETH is in this contract
+        uint256 amountEthForUniswap = address(this).balance;
+        // How many $TACOs are owned by this contract
+        uint256 amountTokensForUniswap = tacoToken.balanceOf(address(this));
+
+        // Unpause TacoToken forever. This will kick off the game.
+        Pauseable(address(tacoToken)).unpause();
+
+        // Send the entire balance and all tokens in the contract to Uniswap LP
+        tacoToken.approve(address(uniswapRouter), amountTokensForUniswap);
+        uniswapRouter.addLiquidityETH{value: amountEthForUniswap}(
+            address(t
