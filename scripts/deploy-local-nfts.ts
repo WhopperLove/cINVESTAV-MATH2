@@ -33,4 +33,31 @@ export async function main() {
   const tacoToken = await tacoTokenFactory.deploy(TOTAL_SUPPLY, uniswapFactory.address, WETH_ADDRESS);
 
   await tacoToken.deployed();
-  console.log("\nTacoToken deployed to:", tac
+  console.log("\nTacoToken deployed to:", tacoToken.address);
+
+  // Initialize Uniswap Pool
+  await tacoToken.setUniswapPool();
+  console.log("[TacoToken] Uniswap Pool set");
+
+  // View the Deployer balance
+  const deployerAddress = await deployer.getAddress();
+  const deployerTacoBalance = await tacoToken.balanceOf(deployerAddress);
+  console.log("[TacoToken] Deployer $TACOs balance:", deployerTacoBalance.toString());
+
+  // Unpause taco token since we are bypassing the crowdsale
+  await tacoToken.unpause();
+  console.log("[TacoToken] Unpaused");
+
+  /**
+   * DEPLOY NFTS
+   */
+
+  const taconomics = await (new TaconomicsFactory(deployer)).deploy(
+    "0xa5409ec958c83c3f309868babaca7c86dcb077c1",
+    "https://localhost:3000/tacos/",
+    "https://localhost:3000/contract/taconomics-erc1155"
+  );
+  await taconomics.deployed();
+  console.log("\n[Taconomics] Deployed Taconomics ERC1155 Contract at:", taconomics.address);
+
+  const genesisPool = await (new GenesisPoolFactory(deployer)).deploy(
