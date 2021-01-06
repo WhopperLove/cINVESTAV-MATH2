@@ -69,4 +69,36 @@ async function main() {
     "0xcA7b598CF47602030ef0b369b6B511dE2853eEBA"
   ];
 
-  const [deployer] = await et
+  const [deployer] = await ethers.getSigners();
+
+  console.log(
+    "Deploying contracts with the account:",
+    await deployer.getAddress()
+  );
+  console.log("Account balance:", ethers.utils.formatEther((await deployer.getBalance())));
+
+  // Deploy TacoToken
+  const tacoTokenFactory = new TacoTokenFactory(deployer);
+  const tacoToken = await tacoTokenFactory.deploy(TOTAL_SUPPLY, UNISWAP_FACTORY_ADDRESS, WETH_ADDRESS);
+
+  await tacoToken.deployed();
+  console.log("\n[TacoToken] deployed to:", tacoToken.address);
+
+  // Initialize Uniswap Pool
+  await (await tacoToken.setUniswapPool()).wait(1);
+  const uniswapPool = await tacoToken.uniswapPool();
+  console.log("[TacoToken] Uniswap Pool set:", uniswapPool);
+
+  // Deploy TacosCrowdsale
+  const tacosCrowdsale = new TacosCrowdsaleFactory(deployer);
+  const crowdsaleContract = await tacosCrowdsale.deploy(
+    tacoToken.address,
+    KARMA_ADDRESS,
+    TACOS_PER_ETH,
+    UNISWAP_ROUTER
+  );
+
+  await crowdsaleContract.deployed();
+  console.log("\n[TacosCrowdsale] deployed to:", crowdsaleContract.address);
+
+  // Adding
