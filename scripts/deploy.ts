@@ -101,4 +101,22 @@ async function main() {
   await crowdsaleContract.deployed();
   console.log("\n[TacosCrowdsale] deployed to:", crowdsaleContract.address);
 
-  // Adding
+  // Adding Cook list
+  await (await crowdsaleContract.setCooksList(EARLY_COOKS_LIST)).wait(1);
+  EARLY_COOKS_LIST.forEach(async (baker) => {
+    console.log(
+      `${baker} is in Crowdsale Cooklist: `,
+      await crowdsaleContract.cookslist(baker)
+    );
+  });
+
+  // Look at the deployer $TACO balance
+  const deployerAddress = await deployer.getAddress();
+  const deployerTacoBalance = await tacoToken.balanceOf(deployerAddress);
+  const crowdsaleTacoBalance = await tacoToken.balanceOf(crowdsaleContract.address);
+  console.log("\n[TacoToken] Deployer $TACOs balance before:", ethers.utils.formatEther(deployerTacoBalance));
+  console.log("[TacoToken] CrowdsaleContract $TACOs balance before:", ethers.utils.formatEther(crowdsaleTacoBalance));
+  // Seed the CrowdsaleContract with $TACO
+  await (await tacoToken.transfer(crowdsaleContract.address, CIRCULATING_SUPPLY)).wait(1);
+  const crowdsaleTacoBalanceafter = await tacoToken.balanceOf(crowdsaleContract.address);
+  const deployerTacoBalanceAfter = await tacoToken.balanc
