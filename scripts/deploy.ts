@@ -119,4 +119,25 @@ async function main() {
   // Seed the CrowdsaleContract with $TACO
   await (await tacoToken.transfer(crowdsaleContract.address, CIRCULATING_SUPPLY)).wait(1);
   const crowdsaleTacoBalanceafter = await tacoToken.balanceOf(crowdsaleContract.address);
-  const deployerTacoBalanceAfter = await tacoToken.balanc
+  const deployerTacoBalanceAfter = await tacoToken.balanceOf(deployerAddress);
+  console.log("[TacoToken] Deployer $TACOs balance after:", ethers.utils.formatEther(deployerTacoBalanceAfter));
+  console.log("[TacoToken] CrowdsaleContract $TACOs balance:", ethers.utils.formatEther(crowdsaleTacoBalanceafter));
+
+  // Set the CrowdsaleContract as the TacoToken#Pauser
+  const originalPauser = await tacoToken.pauser();
+  console.log("\nDeployer address: ", deployerAddress);
+  console.log("[TacoToken] Original Pauser: ", originalPauser);
+  await (await tacoToken.setPauser(crowdsaleContract.address)).wait(1);
+  const newPauser = await tacoToken.pauser();
+  console.log("\nCrowdsale contract address: ", crowdsaleContract.address);
+  console.log("[TacoToken] New Pauser: ", newPauser);
+}
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main()
+  .then(() => process.exit(0))
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
+  });
