@@ -9,4 +9,18 @@ const LoadingTacos: React.FC<{ variant?: "Crowdsale" }> = ({ variant = "Portal" 
       <title>Taco {variant}</title>
       <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
       <link
-      
+        href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Slab&display=swap"
+        rel="stylesheet"
+      ></link>
+    </Head>
+    <Global styles={{ body: { background: customTheme.colors.brandBackground[500] } }}></Global>
+    <Flex flexDirection="column" height={"100vh"} width={"100vw"} justifyContent="center" alignItems="center">
+      <Text mb={2} color="white" fontFamily="secondary" fontSize="2xl">
+        Loading your Tacos!
+      </Text>
+      <Image src="/static/logo.png" height={60} width={85} />
+    </Flex>
+  </Box>
+);
+
+export default LoadingTacos;
