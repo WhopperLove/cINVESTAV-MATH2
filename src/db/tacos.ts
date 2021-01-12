@@ -11,4 +11,9 @@ tacos.push(new Taco(
   [
     new Attribute("Rarity", "Common"),
     new Attribute("Set", "Cruncher Achievements"),
-    new Attribute("
+    new Attribute("Max Supply", "1000"),
+  ],
+  new Pool("Genesis", 10000)
+));
+
+export { tacos };
