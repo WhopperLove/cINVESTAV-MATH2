@@ -36,4 +36,51 @@ export type TaqueroStat = {
   timesCrunched: BigNumber;
   tacosCrunched: BigNumber;
   0: BigNumber;
-  1: 
+  1: BigNumber;
+};
+
+const truncate = (str, maxDecimalDigits) => {
+  if (str.includes(".")) {
+    const parts = str.split(".");
+    return parts[0] + "." + parts[1].slice(0, maxDecimalDigits);
+  }
+  return str;
+};
+
+const truncateAddress = (str) => {
+  return str.slice(0, 5) + "..." + str.slice(38, 42);
+};
+
+const variantColorForRound = (round) => {
+  if (round == "Cooks") {
+    return "purple";
+  } else if (round == "Karma") {
+    return "blue";
+  } else {
+    return "green";
+  }
+};
+
+function useInterval(callback: Function, delay: number) {
+  const savedCallback = useRef<any>();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback?.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+const Crowdsale = () => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  con
