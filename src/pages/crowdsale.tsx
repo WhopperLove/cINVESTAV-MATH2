@@ -83,4 +83,19 @@ function useInterval(callback: Function, delay: number) {
 
 const Crowdsale = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  con
+  const [isFetching, setIsFetching] = React.useState<boolean>(false);
+  const [isFetchingFirstTime, setIsFetchingFirstTime] = React.useState<boolean>(true);
+  const [isPurchasing, setIsPurchasing] = React.useState<boolean>(false);
+
+  const [provider, setProvider] = React.useState<ethers.providers.Web3Provider>(null);
+  const [signer, setSigner] = React.useState<ethers.providers.JsonRpcSigner>(null);
+  const [address, setAddress] = React.useState<string>("0x0");
+  const [ethBalance, setEthBalance] = React.useState<string>("0");
+  const [tacosCrowdsale, setTacosCrowdsale] = React.useState<TacosCrowdsale | null>(null);
+  const [tacoToken, setTacoToken] = React.useState<TacoToken | null>(null);
+
+  const [tacoBalance, setTacoBalance] = React.useState<string>("0");
+  const [amountToBuy, setAmountToBuy] = React.useState<string>(0);
+  const [hardcap, setHardcap] = React.useState<string>("");
+  const [weiRaised, setWeiRaised] = React.useState<string>("");
+  
