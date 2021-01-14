@@ -98,4 +98,26 @@ const Crowdsale = () => {
   const [amountToBuy, setAmountToBuy] = React.useState<string>(0);
   const [hardcap, setHardcap] = React.useState<string>("");
   const [weiRaised, setWeiRaised] = React.useState<string>("");
-  
+  const [capPerAddress, setCapPerAddress] = React.useState<string>("");
+  const [contributions, setContributions] = React.useState<string>("");
+  const [currentRound, setCurrentRound] = React.useState<string>("");
+  const [tacosPerEth, setTacosPerEth] = React.useState<number>(0);
+  const [liquidityLocked, setLiquidityLocked] = React.useState<boolean>(false);
+
+  const handleFirstLoad = async () => {
+    await (window as any).ethereum.enable();
+    const provider = new ethers.providers.Web3Provider((window as any).web3.currentProvider);
+    // ⭐️ After user is successfully authenticated
+    setProvider(provider);
+    const signer = provider.getSigner();
+    setSigner(signer);
+    const address = await signer.getAddress();
+    setAddress(address);
+
+    const tacosCrowdsale = await TacosCrowdsaleFactory.connect(
+      process.env.NEXT_PUBLIC_TACOSCROWDSALE_CONTRACT_ADDRESS,
+      signer
+    );
+    setTacosCrowdsale(tacosCrowdsale);
+
+    const tacoToken =
