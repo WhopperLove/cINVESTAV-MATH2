@@ -120,4 +120,28 @@ const Crowdsale = () => {
     );
     setTacosCrowdsale(tacosCrowdsale);
 
-    const tacoToken =
+    const tacoToken = await TacoTokenFactory.connect(process.env.NEXT_PUBLIC_TACOTOKEN_CONTRACT_ADDRESS, signer);
+    setTacoToken(tacoToken);
+
+    setIsLoading(false);
+    setIsFetching(true);
+  };
+
+  const handleFetchCrowdsaleData = React.useCallback(async () => {
+    if (isFetching) {
+      const ethBalance = await signer.getBalance();
+      setEthBalance(truncate(ethers.utils.formatEther(ethBalance), 2));
+
+      const balance = await tacoToken.balanceOf(address);
+      setTacoBalance(truncate(ethers.utils.formatEther(balance), 2));
+
+      const hardcap = await tacosCrowdsale.ROUND_3_CAP();
+      setHardcap(truncate(ethers.utils.formatEther(hardcap), 2));
+
+      const weiRaised = await tacosCrowdsale.weiRaised();
+      setWeiRaised(truncate(ethers.utils.formatEther(weiRaised), 2));
+
+      const capAddy = await tacosCrowdsale.CAP_PER_ADDRESS();
+      setCapPerAddress(truncate(ethers.utils.formatEther(capAddy), 2));
+
+      const contribution = await tacosCrowdsale.contributions(a
