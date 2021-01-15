@@ -210,4 +210,25 @@ const Crowdsale = () => {
           rel="stylesheet"
         ></link>
       </Head>
-      <Global styles=
+      <Global styles={{ body: { background: customTheme.colors.brandBackground[500] } }}></Global>
+      <Flex mb={5} flexDirection="column" justifyContent="center" alignItems="center">
+        <Text mb={2} color="primary.500" fontFamily="primary" fontSize="2xl">
+          Welcome to the Taco stand!
+        </Text>
+        <Image src="/static/logo.png" height={60} width={85} />
+      </Flex>
+
+      <Stack mt={5} direction="column" justifyContent="center" alignItems="center">
+        <Text fontFamily="primary" fontSize={"lg"}>
+          Your address: {truncateAddress(address)} <br />
+        </Text>
+        <Text>
+          Current Round: <Badge variantColor={variantColorForRound(currentRound)}>{currentRound}</Badge>
+        </Text>
+        <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></Divider>
+        {isPurchasing || isFetchingFirstTime ? (
+          <p>
+            <Spinner />
+          </p>
+        ) : (
+          <Button width={300} onClick={handleTokensPurchase} variantColor=
