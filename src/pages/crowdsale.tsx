@@ -182,4 +182,32 @@ const Crowdsale = () => {
       console.info("Trying to buy from the crowdsale");
       setIsPurchasing(true);
       const gasPrice = await provider.getGasPrice();
-      
+      const result = await signer.sendTransaction({
+        to: process.env.NEXT_PUBLIC_TACOSCROWDSALE_CONTRACT_ADDRESS,
+        value: ethers.utils.parseEther(amountToBuy),
+        gasPrice,
+      });
+      console.info("Transaction sent...waiting for confirmation");
+      await result.wait(1);
+      console.info("Transaction confirmed");
+      setIsPurchasing(false);
+      setIsFetching(true);
+    } catch (err) {
+      console.error(err);
+      setIsPurchasing(false);
+    }
+  };
+
+  const handleAmountToBuyInput = (event) => setAmountToBuy(event.target.value);
+
+  return (
+    <Stack justifyContent="center" alignItems="center" direction="column" py={10}>
+      <Head>
+        <title>Taco Crowdsale</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Slab&display=swap"
+          rel="stylesheet"
+        ></link>
+      </Head>
+      <Global styles=
