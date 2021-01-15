@@ -144,4 +144,42 @@ const Crowdsale = () => {
       const capAddy = await tacosCrowdsale.CAP_PER_ADDRESS();
       setCapPerAddress(truncate(ethers.utils.formatEther(capAddy), 2));
 
-      const contribution = await tacosCrowdsale.contributions(a
+      const contribution = await tacosCrowdsale.contributions(address);
+      setContributions(truncate(ethers.utils.formatEther(contribution), 2));
+
+      setCurrentRound(await tacosCrowdsale.getCurrentRound());
+
+      setTacosPerEth((await tacosCrowdsale.tacosPerEth()).toNumber());
+
+      setLiquidityLocked(await tacosCrowdsale.liquidityLocked());
+
+      setIsFetching(false);
+      setIsFetchingFirstTime(false);
+    }
+  }, [isFetching]);
+
+  React.useEffect(() => {
+    handleFirstLoad();
+  }, []);
+
+  React.useEffect(() => {
+    handleFetchCrowdsaleData();
+  }, [handleFetchCrowdsaleData]);
+
+  useInterval(() => {
+    if (!isPurchasing) {
+      setIsFetching(true);
+    }
+  }, fetchInterval);
+
+  if (isLoading) {
+    return <LoadingTacos variant="Crowdsale"></LoadingTacos>;
+  }
+
+  const handleTokensPurchase = async () => {
+    try {
+      // console.log(tacoToken);
+      console.info("Trying to buy from the crowdsale");
+      setIsPurchasing(true);
+      const gasPrice = await provider.getGasPrice();
+      
