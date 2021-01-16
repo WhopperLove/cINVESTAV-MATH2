@@ -231,4 +231,29 @@ const Crowdsale = () => {
             <Spinner />
           </p>
         ) : (
-          <Button width={300} onClick={handleTokensPurchase} variantColor=
+          <Button width={300} onClick={handleTokensPurchase} variantColor="green">
+            BUY INTO CROWDSALE: {amountToBuy || 0} ETH
+          </Button>
+        )}
+        <Text fontFamily="primary" fontSize={"lg"}>
+          ETH AMOUNT TO BUY
+        </Text>
+        <Input placeholder={"0.1 to 2"} type="text" onChange={handleAmountToBuyInput} autoFocus focusBorderColor="pink.400"/>
+        <br />
+        <div>
+          Total Raised: {weiRaised} of {hardcap} ETH
+          <br />
+          {isPurchasing || isFetchingFirstTime ? (
+            <Progress hasStripe isAnimated value="100" />
+          ) : (
+            <Progress hasStripe value={(weiRaised / hardcap) * 100} />
+          )}
+        </div>
+        <br />
+        <div>
+          Your contributions {contributions} of {capPerAddress} ETH
+          <br />
+          {isPurchasing || isFetchingFirstTime ? (
+            <Progress hasStripe isAnimated color="red" value="100" />
+          ) : (
+            <Progress hasStripe color="red" value={(contributions / ca
