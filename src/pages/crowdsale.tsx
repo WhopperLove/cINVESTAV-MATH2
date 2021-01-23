@@ -256,4 +256,26 @@ const Crowdsale = () => {
           {isPurchasing || isFetchingFirstTime ? (
             <Progress hasStripe isAnimated color="red" value="100" />
           ) : (
-            <Progress hasStripe color="red" value={(contributions / ca
+            <Progress hasStripe color="red" value={(contributions / capPerAddress) * 100} />
+          )}
+        </div>
+        <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></Divider>
+        <StatGroup>
+          <Stat>
+            <StatLabel>Balance</StatLabel>
+            <StatNumber>{isPurchasing || isFetchingFirstTime ? <Spinner /> : tacoBalance}</StatNumber>
+            <StatHelpText>Tacos</StatHelpText>
+          </Stat>
+
+          <Stat>
+            <StatLabel>&nbsp;</StatLabel>
+            <StatNumber>{isPurchasing || isFetchingFirstTime ? <Spinner /> : truncate(ethBalance, 2)}</StatNumber>
+            <StatHelpText>ETH</StatHelpText>
+          </Stat>
+        </StatGroup>
+        <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></Divider>
+        <Stack direction="column" justifyContent="center" alignItems="center">
+          <p>
+            <b>1 ETH = {isPurchasing || isFetchingFirstTime ? <Spinner /> : tacosPerEth} TACO</b>
+          </p>
+          {liq
