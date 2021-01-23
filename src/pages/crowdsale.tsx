@@ -291,4 +291,13 @@ const Crowdsale = () => {
           $TACO to have fun and to experience this experimental game with us. Many factors outside of the
           control of $TACO Token will effect the market price, including, but not limited to, national and
           international economic, financial, regulatory, political, terrorist, military, and other events,
-     
+          adverse or positive news events and publicity, and generally extreme, uncertain, and volatile market
+          conditions. Extreme changes in price may occur at any time, resulting in a potential loss of value,
+          complete or partial loss of purchasing power, and difficulty or a complete inability to sell or
+          exchange your digital currency. $TACO Token shall be under no obligation to purchase or to broker
+          the purchase back from you of your cryptocurrency in circumstances where there is no viable market
+          for the purchase of the same. None of the content published on this site constitutes a recommendation
+          that any particular cryptocurrency, portfolio of cryptocurrencies, transaction or investment strategy
+          is suitable for any specific person. None of the information providers or their affiliates will advise
+          you personally concerning the nature, potential, value or suitability of any particular cryptocurrency,
+          portfolio of
