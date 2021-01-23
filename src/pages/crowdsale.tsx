@@ -300,4 +300,13 @@ const Crowdsale = () => {
           that any particular cryptocurrency, portfolio of cryptocurrencies, transaction or investment strategy
           is suitable for any specific person. None of the information providers or their affiliates will advise
           you personally concerning the nature, potential, value or suitability of any particular cryptocurrency,
-          portfolio of
+          portfolio of cryptocurrencies, transaction, investment strategy or other matter. The products and
+          services presented on this website may only be purchased in jurisdictions in which their marketing
+          and distribution are authorized. Play at your own risk and may the odds be ever in your favor.
+        </Text>
+      </Stack>
+    </Stack>
+  );
+};
+
+export default Crowdsale;
