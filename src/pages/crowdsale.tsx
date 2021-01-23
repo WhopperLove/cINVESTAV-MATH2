@@ -278,4 +278,17 @@ const Crowdsale = () => {
           <p>
             <b>1 ETH = {isPurchasing || isFetchingFirstTime ? <Spinner /> : tacosPerEth} TACO</b>
           </p>
-          {liq
+          {liquidityLocked ? <p>Liquidity locked!</p> : <p>Liquidity hasn't been locked yet. </p>}
+        </Stack>
+      </Stack>
+      <Stack>
+      <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></Divider>
+      <Text>
+          DISCLAIMER: $TACO token is not an official KARMA DAO project. $TACO token is purely entertainment,
+          not an investment. Purely an experimental GAME. Before purchasing $TACO tokens, you must ensure
+          that the nature, complexity and risks inherent in the trading of cryptocurrency are suitable for
+          your objectives in light of your circumstances and financial position. You should only purchase
+          $TACO to have fun and to experience this experimental game with us. Many factors outside of the
+          control of $TACO Token will effect the market price, including, but not limited to, national and
+          international economic, financial, regulatory, political, terrorist, military, and other events,
+     
