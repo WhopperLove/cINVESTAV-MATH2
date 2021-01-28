@@ -50,4 +50,19 @@ const truncateAddress = (str) => {
 function HomePage() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [isFetching, setIsFetching] = React.useState<boolean>(false);
-  const [isFetchingFirstTime, setIsFetchingFirstTime] = React.useState<bool
+  const [isFetchingFirstTime, setIsFetchingFirstTime] = React.useState<boolean>(true);
+  const [isCrunchLoading, setIsCrunchLoading] = React.useState<boolean>(false);
+  // const [isPurchasing, setIsPurchasing] = React.useState<boolean>(false);
+
+  const [provider, setProvider] = React.useState<ethers.providers.Web3Provider>(null);
+  const [signer, setSigner] = React.useState<ethers.providers.JsonRpcSigner>(null);
+  const [address, setAddress] = React.useState<string>("0x0");
+
+  const [tacoToken, setTacoToken] = React.useState<TacoToken | null>(null);
+  const [isTacoTuesday, setIsTacoTuesday] = React.useState<boolean>(false);
+  const [rewardMultiplier, setRewardMultiplier] = React.useState<number>(1);
+  const [lastCrunchTime, setLastCrunchTime] = React.useState<number>(0);
+  const [tacosCrunchedleaderboard, setTacosCrunchedLeaderboard] = React.useState<TaqueroStat[]>([]);
+  const [timesCrunchedLeaderboard, setTimesCrunchedLeaderboard] = React.useState<TaqueroStat[]>([]);
+  const [infoFor, setInfoFor] = React.useState<InfoFor | null>(null);
+  const [isOwner, setIsOwner] = React.useState<boolean>(fa
