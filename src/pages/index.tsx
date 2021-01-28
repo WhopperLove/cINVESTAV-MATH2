@@ -65,4 +65,37 @@ function HomePage() {
   const [tacosCrunchedleaderboard, setTacosCrunchedLeaderboard] = React.useState<TaqueroStat[]>([]);
   const [timesCrunchedLeaderboard, setTimesCrunchedLeaderboard] = React.useState<TaqueroStat[]>([]);
   const [infoFor, setInfoFor] = React.useState<InfoFor | null>(null);
-  const [isOwner, setIsOwner] = React.useState<boolean>(fa
+  const [isOwner, setIsOwner] = React.useState<boolean>(false);
+
+  function useInterval(callback: Function, delay: number) {
+    const savedCallback = useRef<any>();
+
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback?.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  }
+
+  const handleFirstLoad = async () => {
+    window.addEventListener("load", async () => {
+      try {
+        // Request full provider if needed
+        // Full provider exposed
+        await (window as any).ethereum.enable();
+        const provider = new ethers.providers.Web3Provider((window as any).web3.currentProvider);
+        // ⭐️ After user is successfully authenticated
+
+        setProvider(provider);
+        const signer = provider.getSigner();
+        setSigner(sign
