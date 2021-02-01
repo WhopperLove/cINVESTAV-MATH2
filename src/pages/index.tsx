@@ -128,4 +128,22 @@ function HomePage() {
 
       const taqueros = await tacoToken.getTaqueros();
 
-  
+      const leaderboardQuery = Promise.all(taqueros.map((taquero) => tacoToken.getTaqueroStats(taquero)));
+      const leaderboard = await leaderboardQuery;
+      const sortedTacosCrunchedLeaderboard = leaderboard
+        .map((taqueroStats, index) => ({ ...taqueroStats, address: taqueros[index] }))
+        .sort((a, b) => (a.tacosCrunched.lt(b.tacosCrunched) ? 1 : -1));
+      setTacosCrunchedLeaderboard(sortedTacosCrunchedLeaderboard);
+      const sortedTimesCrunchedLeaderboard = leaderboard
+        .map((taqueroStats, index) => ({ ...taqueroStats, address: taqueros[index] }))
+        .sort((a, b) => (a.timesCrunched.lt(b.timesCrunched) ? 1 : -1));
+      setTimesCrunchedLeaderboard(sortedTimesCrunchedLeaderboard);
+
+      const info = await tacoToken.getInfoFor(address);
+      Object.keys(info).map(function(key, index) {
+        info[key] = info[key].toString();
+      });
+      setInfoFor(info);
+
+      const owner = await tacoToken.owner();
+ 
