@@ -98,4 +98,34 @@ function HomePage() {
 
         setProvider(provider);
         const signer = provider.getSigner();
-        setSigner(sign
+        setSigner(signer);
+        const address = await signer.getAddress();
+        setAddress(address);
+
+        const tacoToken = await TacoTokenFactory.connect(process.env.NEXT_PUBLIC_TACOTOKEN_CONTRACT_ADDRESS, signer);
+        setTacoToken(tacoToken);
+
+        setIsLoading(false);
+        setIsFetching(true);
+      } catch (error) {
+        console.error(error);
+        // User denied full provider access
+      }
+    });
+  };
+
+  const handleFetchTacoData = React.useCallback(async () => {
+    if (isFetching && tacoToken) {
+      const isTacoTuesday = await tacoToken.isTacoTuesday();
+      setIsTacoTuesday(isTacoTuesday);
+      console.log("isTacoTuesday : ", isTacoTuesday);
+
+      const rewardMult = await tacoToken.rewardMultiplier();
+      setRewardMultiplier(rewardMult.div(10).toNumber());
+
+      const crunchTime = await tacoToken.lastCrunchTime();
+      setLastCrunchTime(crunchTime.toNumber());
+
+      const taqueros = await tacoToken.getTaqueros();
+
+  
