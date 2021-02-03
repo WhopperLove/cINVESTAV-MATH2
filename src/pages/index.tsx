@@ -146,4 +146,48 @@ function HomePage() {
       setInfoFor(info);
 
       const owner = await tacoToken.owner();
- 
+      const isOwner = address === owner;
+      setIsOwner(isOwner);
+
+      setIsFetching(false);
+      setIsFetchingFirstTime(false);
+    }
+  }, [isFetching, tacoToken]);
+
+  React.useEffect(() => {
+    handleFirstLoad();
+  }, []);
+
+  useInterval(() => {
+    if (!isCrunchLoading) {
+      setIsFetching(true);
+    }
+    handleFetchTacoData();
+  }, fetchInterval);
+
+  const handleCrunch = async () => {
+    if (isCrunchLoading) return;
+    try {
+      console.log(tacoToken);
+      console.info("trying to crunch pool");
+      setIsCrunchLoading(true);
+      const result = await tacoToken.crunchPool();
+      await result.wait(1);
+      console.log(result);
+      setIsCrunchLoading(false);
+      setIsFetching(true);
+    } catch (err) {
+      console.error(err);
+      setIsCrunchLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingTacos></LoadingTacos>;
+  }
+
+  return (
+    <Box pb={10}>
+      <Head>
+        <title>Taco Portal</title>
+        <link href="https://f
