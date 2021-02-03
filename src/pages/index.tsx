@@ -240,4 +240,23 @@ function HomePage() {
               <Fragment>
                 {isTacoTuesday ? (
                   <Text fontWeight="bold" fontSize="xl" fontFamily="primary" color="white">
-                    
+                    IT'S TACO TUESDAY
+                  </Text>
+                ) : null}
+                <Text fontWeight="500" fontSize="lg" fontFamily="primary" color="white">
+                  {isTacoTuesday ? `IT'S DOUBLE CRUNCH TIME!` : `IT'S CRUNCH TIME!`}
+                </Text>
+                <Text fontWeight="bold" fontSize="xl" fontFamily="primary" color="white">
+                  {isCrunchLoading || isFetchingFirstTime ? (
+                    <Spinner />
+                  ) : (
+                    `${truncate(ethers.utils.formatEther(infoFor?.crunchableTacos), 4)} $TACO`
+                  )}
+                </Text>
+                <Text fontWeight="bold" fontSize="md" fontFamily="primary" color="white">
+                  Crunch to claim a{" "}
+                  {isCrunchLoading || isFetchingFirstTime ? <Spinner /> : infoFor.taqueroRewardRate * rewardMultiplier}%
+                  reward
+                </Text>
+              </Fragment>
+          
