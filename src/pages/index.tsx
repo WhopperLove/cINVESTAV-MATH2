@@ -213,4 +213,31 @@ function HomePage() {
         <Stack direction={"row"} spacing={[0, 0, 3]} justifyContent="center" flexWrap="wrap">
           {/* Get Spicy */}
           <PseudoBox
-            _hover={{ b
+            _hover={{ boxShadow: isCrunchLoading ? "" : customTheme.shadows.xl }}
+            as={Stack}
+            minWidth="350px"
+            cursor={isCrunchLoading ? "" : "pointer"}
+            borderRadius={8}
+            p={5}
+            // @ts-ignore
+            spacing={3}
+            alignItems="center"
+            direction="column"
+            bg={"primary.500"}
+            mb={[3, 3, 0]}
+            onClick={handleCrunch}
+          >
+            {isCrunchLoading ? (
+              <Fragment>
+                <Text color="white" fontFamily="primary" fontSize="lg">
+                  LOADING CRUNCH...
+                </Text>
+                <Text color="white" fontFamily="primary" fontSize="lg">
+                  APPROVE TRANSACTION YO
+                </Text>
+              </Fragment>
+            ) : (
+              <Fragment>
+                {isTacoTuesday ? (
+                  <Text fontWeight="bold" fontSize="xl" fontFamily="primary" color="white">
+                    
