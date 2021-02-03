@@ -190,4 +190,27 @@ function HomePage() {
     <Box pb={10}>
       <Head>
         <title>Taco Portal</title>
-        <link href="https://f
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto+Slab&display=swap"
+          rel="stylesheet"
+        ></link>
+      </Head>
+      <Global styles={{ body: { background: customTheme.colors.brandBackground[500] } }}></Global>
+
+      {/* Nav */}
+      <Flex py={3} px={5} alignItems="center" justifyContent="space-between">
+        <Image src="/static/logo.png" height={60} width={85} />
+
+        <Text textTransform="uppercase" fontSize="lg" fontWeight="bold" fontFamily="primary" color="white">
+          Taco Portal
+        </Text>
+      </Flex>
+
+      {/* Content */}
+      <Stack mt={[3, 8]} alignItems="center" direction={"column"} spacing={5}>
+        {/* Top Flex */}
+        <Stack direction={"row"} spacing={[0, 0, 3]} justifyContent="center" flexWrap="wrap">
+          {/* Get Spicy */}
+          <PseudoBox
+            _hover={{ b
