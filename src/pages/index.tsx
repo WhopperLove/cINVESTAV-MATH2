@@ -259,4 +259,30 @@ function HomePage() {
                   reward
                 </Text>
               </Fragment>
-          
+            )}
+          </PseudoBox>
+          {/* Top Taquero */}
+          <Stack
+            minWidth="350px"
+            borderRadius={8}
+            p={5}
+            spacing={3}
+            alignItems="center"
+            direction="column"
+            bg={"primary.500"}
+          >
+            <Text textTransform="uppercase" fontWeight="500" fontSize="lg" fontFamily="primary" color="white">
+              Top Taquero
+            </Text>
+            <Text fontFamily="secondary" color="white" fontSize="lg">
+              {tacosCrunchedleaderboard?.[0]?.address ?? "None yet, will you be the first?"}
+            </Text>
+          </Stack>
+        </Stack>
+
+        {/* Middle Flex */}
+        <Stack justifyContent="center" flexWrap="wrap" direction={"row"} spacing={2}>
+          {/* Total Crunched */}
+          <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="column">
+            <Text fontFamily="primary" fontWeight="500" fontSize="lg">
+              Total Crun
