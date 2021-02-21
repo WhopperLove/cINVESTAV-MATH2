@@ -285,4 +285,26 @@ function HomePage() {
           {/* Total Crunched */}
           <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="column">
             <Text fontFamily="primary" fontWeight="500" fontSize="lg">
-              Total Crun
+              Total Crunched
+            </Text>
+            <Text fontFamily="primary" fontWeight="bold" fontSize="xl" color="white">
+              {isCrunchLoading || isFetchingFirstTime ? (
+                <Spinner />
+              ) : (
+                `${truncate(ethers.utils.formatEther(infoFor?.totalTacosCrunched), 4)} $TACO`
+              )}
+            </Text>
+            {/* <Text fontFamily="primary" fontWeight="bold" fontSize="l" color="white">
+              {`$ amount`}
+            </Text> */}
+          </Stack>
+          {/* Last Crunch Time */}
+          <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="column">
+            <Text fontFamily="primary" fontWeight="500" fontSize="lg">
+              Last Crunch Time
+            </Text>
+            <Text fontFamily="primary" fontWeight="bold" fontSize="xl" color="white">
+              {isCrunchLoading || isFetchingFirstTime ? <Spinner /> : moment.unix(lastCrunchTime).fromNow()}
+            </Text>
+          </Stack>
+      
