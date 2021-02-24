@@ -307,4 +307,22 @@ function HomePage() {
               {isCrunchLoading || isFetchingFirstTime ? <Spinner /> : moment.unix(lastCrunchTime).fromNow()}
             </Text>
           </Stack>
-      
+        </Stack>
+
+        {/* My Rewards */}
+        <Stack justifyContent="center" flexWrap="wrap" direction={"row"} spacing={2}>
+          <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="column">
+            <Text fontFamily="primary" fontWeight="500" fontSize="lg">
+              My Rewards
+            </Text>
+            <Text fontFamily="primary" fontWeight="bold" fontSize="xl" color="white">
+              {isCrunchLoading || isFetchingFirstTime ? (
+                <Spinner />
+              ) : (
+                `${truncate(ethers.utils.formatEther(infoFor?.tacosCrunched), 4)} $TACO`
+              )}
+            </Text>
+            {/* <Text fontFamily="primary" fontWeight="bold" fontSize="l" color="white">{`$ amount`}</Text> */}
+          </Stack>
+          {/* My Wallet */}
+          <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="colum
