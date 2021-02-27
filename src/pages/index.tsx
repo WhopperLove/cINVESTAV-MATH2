@@ -347,4 +347,31 @@ function HomePage() {
           {/* Most Crunches */}
           <Stack width="500px" mb={[3, 3, 0]} justifyContent="center">
             <Text
-              color=
+              color="primary.500"
+              textTransform="uppercase"
+              fontFamily="primary"
+              fontWeight="900"
+              fontSize="xl"
+              textAlign="center"
+              alignSelf="center"
+            >
+              Most Crunches
+            </Text>
+            <Flex direction="column" alignItems="center">
+              {timesCrunchedLeaderboard.length ? (
+                timesCrunchedLeaderboard.map((taqueroStats) => (
+                  <Text fontFamily="secondary" fontWeight="lg" color="white">
+                    {taqueroStats.timesCrunched.toNumber()} --- {truncateAddress(taqueroStats.address)}
+                  </Text>
+                ))
+              ) : (
+                <Text fontFamily="secondary" color="white" fontSize="lg">
+                  <Spinner />
+                </Text>
+              )}
+            </Flex>
+          </Stack>
+          {/* Most Tacos */}
+          <Stack width="500px" alignItems="center">
+            <Text
+              color="primary.
