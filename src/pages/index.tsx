@@ -325,4 +325,26 @@ function HomePage() {
             {/* <Text fontFamily="primary" fontWeight="bold" fontSize="l" color="white">{`$ amount`}</Text> */}
           </Stack>
           {/* My Wallet */}
-          <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="colum
+          <Stack p={5} width="350px" spacing={3} justifyContent="center" alignItems="center" direction="column">
+            <Text fontFamily="primary" fontWeight="500" fontSize="lg">
+              My Wallet
+            </Text>
+            <Text fontFamily="primary" fontWeight="bold" fontSize="xl" color="white">
+              {isCrunchLoading || isFetchingFirstTime ? (
+                <Spinner />
+              ) : (
+                `${truncate(ethers.utils.formatEther(infoFor?.balance), 4)} $TACO`
+              )}
+            </Text>
+            {/* <Text fontFamily="primary" fontWeight="bold" fontSize="l" color="white">{`$ amount`}</Text> */}
+          </Stack>
+        </Stack>
+
+        <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></Divider>
+
+        {/* Leaderboard */}
+        <Stack justifyContent="center" flexWrap="wrap" direction={"row"} spacing={[0, 0, 5]}>
+          {/* Most Crunches */}
+          <Stack width="500px" mb={[3, 3, 0]} justifyContent="center">
+            <Text
+              color=
