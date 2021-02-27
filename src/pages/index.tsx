@@ -402,4 +402,16 @@ function HomePage() {
 
         {isOwner ? (
           <Fragment>
-            <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></
+            <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></Divider>
+            <Stack direction="column" spacing={3}>
+              <Flex>Hidden naughty stuff 1</Flex>
+              <Flex>Hidden naughty stuff 2</Flex>
+            </Stack>
+          </Fragment>
+        ) : null}
+      </Stack>
+    </Box>
+  );
+}
+
+export default HomePage;
