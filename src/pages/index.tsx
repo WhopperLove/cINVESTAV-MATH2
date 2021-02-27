@@ -374,4 +374,32 @@ function HomePage() {
           {/* Most Tacos */}
           <Stack width="500px" alignItems="center">
             <Text
-              color="primary.
+              color="primary.500"
+              textTransform="uppercase"
+              fontFamily="primary"
+              fontWeight="900"
+              fontSize="xl"
+              textAlign="center"
+            >
+              Most Tacos Crunched
+            </Text>
+            <Flex direction="column" alignItems="center">
+              {tacosCrunchedleaderboard.length ? (
+                tacosCrunchedleaderboard.map((taqueroStats) => (
+                  <Text fontFamily="secondary" fontWeight="lg" color="white">
+                    {truncate(ethers.utils.formatEther(taqueroStats.tacosCrunched), 4)} ---{" "}
+                    {truncateAddress(taqueroStats.address)}
+                  </Text>
+                ))
+              ) : (
+                <Text fontFamily="secondary" color="white" fontSize="lg">
+                  <Spinner />
+                </Text>
+              )}
+            </Flex>
+          </Stack>
+        </Stack>
+
+        {isOwner ? (
+          <Fragment>
+            <Divider orientation="horizontal" width={"100%"} background="black" height={"2px"}></
