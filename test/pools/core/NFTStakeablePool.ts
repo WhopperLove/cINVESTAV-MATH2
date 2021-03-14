@@ -60,4 +60,23 @@ describe("NFTStakeablePool", function() {
     it("Cannot stake when underlying balance is 0", async function () {
       await underlyingToken.connect(staker).approve(nftStakeablePool.address, 100);
       await expect(nftStakeablePool.connect(staker).stake(100))
-        .to.be.rever
+        .to.be.revertedWith("ERC20: transfer amount exceeds balance");
+    });
+
+    it("Can stake, after approval and with enough balance", async function () {
+      const stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(nftStakeablePool.address, 100);
+      await nftStakeablePool.connect(staker).stake(100);
+
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(100);
+    });
+
+    it("contract balance of underlying has the total staked balance", async function () {
+      const stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(nftStakeablePool.address, 100);
+      await nftStakeablePool.connect(staker).stake(100);
+
+      expect(await nftStakeablePool.balanceOf(stakerAddress)).to.equal(100);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)
