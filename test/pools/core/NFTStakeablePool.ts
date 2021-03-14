@@ -79,4 +79,26 @@ describe("NFTStakeablePool", function() {
       await nftStakeablePool.connect(staker).stake(100);
 
       expect(await nftStakeablePool.balanceOf(stakerAddress)).to.equal(100);
-      expect(await underlyingToken.balanceOf(nftStakeablePool.address)
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(100);
+
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+      await nftStakeablePool.stake(120);
+
+      expect(await nftStakeablePool.balanceOf(deployerAddress)).to.equal(120);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(220);
+    });
+
+    it("succesfully updates lastUpdateTime", async function () {
+      const stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(nftStakeablePool.address, 100);
+
+      expect(await nftStakeablePool.lastUpdateTime(stakerAddress)).to.equal(0);
+      await nftStakeablePool.connect(staker).stake(100);
+      expect(await nftStakeablePool.lastUpdateTime(stakerAddress)).not.to.equal(0);
+    });
+
+    it("cannot stake when strategy returns false", async function () {
+      const neverStakeStrategy = await (new NeverStakeStrategyFactory(deployer)).deploy();
+      const stakerAddress = await staker.getAddress();
+      await nftS
