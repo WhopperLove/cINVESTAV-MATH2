@@ -165,4 +165,29 @@ describe("NFTStakeablePool", function() {
     });
 
     it("can withdraw exactly the same amount that was staked", async function() {
-      await underlyingToken.approv
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+      await nftStakeablePool.stake(120);
+
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(120);
+
+      await nftStakeablePool.withdraw(120);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(0);
+    });
+
+    it("can withdraw less than what was staked", async function() {
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+      await nftStakeablePool.stake(120);
+
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(120);
+
+      await nftStakeablePool.withdraw(60);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(60);
+    });
+
+    it("cannot withdraw more than what was staked", async function() {
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+      await nftStakeablePool.stake(120);
+
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(120);
+
+      await expect(nft
