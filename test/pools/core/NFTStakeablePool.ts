@@ -126,4 +126,21 @@ describe("NFTStakeablePool", function() {
     });
 
     it("generates as many points as staked balance per day", async function() {
-   
+      await network.provider.send("evm_increaseTime", [86400]);
+      await network.provider.send("evm_mine");
+      expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(10000);
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(0);
+    });
+
+    it("generates half the points in half the day", async function() {
+      await network.provider.send("evm_increaseTime", [86400/2]);
+      await network.provider.send("evm_mine");
+      expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(5000);
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(0);
+    });
+
+    it("generates as many points as staked balance per day, even after staking more", async function() {
+      await network.provider.send("evm_increaseTime", [86400]);
+      await nftStakeablePool.connect(staker).stake(10000);
+      expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(10000);
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(10
