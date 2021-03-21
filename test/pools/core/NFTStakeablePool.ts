@@ -143,4 +143,26 @@ describe("NFTStakeablePool", function() {
       await network.provider.send("evm_increaseTime", [86400]);
       await nftStakeablePool.connect(staker).stake(10000);
       expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(10000);
-      expect(await nftStakeablePool.points(stakerAddress)).to.equal(10
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(10000);
+    });
+
+    it("uses new balance for subsequent earned points", async function() {
+      await network.provider.send("evm_increaseTime", [86400]);
+      await nftStakeablePool.connect(staker).stake(10000);
+      expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(10000);
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(10000);
+      await network.provider.send("evm_increaseTime", [86400]);
+      await network.provider.send("evm_mine");
+      expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(30000);
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(10000);
+    });
+  });
+
+  describe("#withdraw", function() {
+    it("cannot withdraw when nothing is staked", async function() {
+      await expect(nftStakeablePool.withdraw(100))
+        .to.be.revertedWith("Cannot withdraw more than what's staked.");
+    });
+
+    it("can withdraw exactly the same amount that was staked", async function() {
+      await underlyingToken.approv
