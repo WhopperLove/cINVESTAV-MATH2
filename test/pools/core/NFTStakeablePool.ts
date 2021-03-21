@@ -101,4 +101,29 @@ describe("NFTStakeablePool", function() {
     it("cannot stake when strategy returns false", async function () {
       const neverStakeStrategy = await (new NeverStakeStrategyFactory(deployer)).deploy();
       const stakerAddress = await staker.getAddress();
-      await nftS
+      await nftStakeablePool.setStakeableStrategy(neverStakeStrategy.address);
+
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(nftStakeablePool.address, 100);
+
+      await expect(nftStakeablePool.connect(staker).stake(100))
+        .to.be.revertedWith("StakeableToken#_stake: Sender doesn't meet the requirements to stake.");
+    });
+  });
+
+  describe("#earnedPoints", function() {
+    let stakerAddress: string;
+    beforeEach(async function() {
+      stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 50000);
+      await underlyingToken.connect(staker).approve(nftStakeablePool.address, 9999999);
+      await nftStakeablePool.connect(staker).stake(10000);
+    });
+
+    it("starts with 0 points", async function() {
+      expect(await nftStakeablePool.earnedPoints(stakerAddress)).to.equal(0);
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(0);
+    });
+
+    it("generates as many points as staked balance per day", async function() {
+   
