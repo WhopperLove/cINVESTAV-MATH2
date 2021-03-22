@@ -190,4 +190,31 @@ describe("NFTStakeablePool", function() {
 
       expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(120);
 
-      await expect(nft
+      await expect(nftStakeablePool.withdraw(200))
+        .to.be.revertedWith("Cannot withdraw more than what's staked.");
+    });
+
+    it("succesfully updates lastUpdateTime", async function () {
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+
+      expect(await nftStakeablePool.lastUpdateTime(deployerAddress)).to.equal(0);
+
+      await nftStakeablePool.stake(120);
+
+      const lastUpdateTime = await nftStakeablePool.lastUpdateTime(deployerAddress);
+      expect(lastUpdateTime.toNumber()).to.be.greaterThan(0);
+
+      await nftStakeablePool.withdraw(60);
+      expect((await nftStakeablePool.lastUpdateTime(deployerAddress)).toNumber()).to.be.greaterThan(lastUpdateTime.toNumber());
+    });
+  });
+
+  describe("#balanceOf", function() {
+    let stakerAddress: string;
+
+    beforeEach(async function() {
+      stakerAddress = await staker.getAddress();
+    });
+
+    it("is 0 for every new address", async function() {
+      expect(await nftStakeablePool.balanceOf(stakerAddress)).to.equal(0)
