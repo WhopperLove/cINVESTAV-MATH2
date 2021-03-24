@@ -240,4 +240,27 @@ describe("NFTStakeablePool", function() {
       expect(await nftStakeablePool.balanceOf(stakerAddress)).to.equal(100);
       expect(await nftStakeablePool.balanceOf(deployerAddress)).to.equal(120);
     });
- 
+  });
+
+  describe("#totalSupply", function() {
+    it("is 0 when nobody has staked", async function() {
+      expect(await nftStakeablePool.totalSupply()).to.equal(0);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(0);
+    });
+
+    it("increases when underlying is staked", async function() {
+      expect(await nftStakeablePool.totalSupply()).to.equal(0);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(0);
+
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+      await nftStakeablePool.stake(120);
+
+      expect(await nftStakeablePool.totalSupply()).to.equal(120);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(120);
+    });
+
+    it("decreases after withdrawal", async function() {
+      expect(await nftStakeablePool.totalSupply()).to.equal(0);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(0);
+
+      await underlyingT
