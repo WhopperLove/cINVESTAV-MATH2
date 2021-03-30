@@ -287,4 +287,21 @@ describe("NFTStakeablePool", function() {
       expect((await nftStakeablePool.nfts(1)).pointsToRedeem).to.equal(10000);
     });
 
-    it("emits NFTAdded 
+    it("emits NFTAdded event", async function () {
+      await expect(nftStakeablePool.addNFT(1, 10000, "0x0000000000000000000000000000000000000000"))
+        .to.emit(nftStakeablePool, 'NFTAdded').withArgs(1, 10000, "0x0000000000000000000000000000000000000000", deployerAddress);
+    });
+  });
+
+  describe("updateNFTStrategy", function () {
+    it("cannot update strategy of non redeemable NFT", async function () {
+      await expect(nftStakeablePool.updateNFTStrategy(1, "0x0000000000000000000000000000000000000001"))
+        .to.be.revertedWith("RedeemableNFT#updateNFTStrategy: NFT not found");
+    });
+
+    it("succesfully updates strategy of NFT and emits event", async function () {
+      await nftStakeablePool.addNFT(1, 10000, "0x0000000000000000000000000000000000000000");
+      expect((await nftStakeablePool.nfts(1)).strategy).to.equal("0x0000000000000000000000000000000000000000");
+
+      await expect(nftStakeablePool.updateNFTStrategy(1, "0x0000000000000000000000000000000000000001"))
+        .to.emit(
