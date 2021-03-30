@@ -263,4 +263,28 @@ describe("NFTStakeablePool", function() {
       expect(await nftStakeablePool.totalSupply()).to.equal(0);
       expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(0);
 
-      await underlyingT
+      await underlyingToken.approve(nftStakeablePool.address, 120);
+      await nftStakeablePool.stake(120);
+
+      expect(await nftStakeablePool.totalSupply()).to.equal(120);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(120);
+
+      await nftStakeablePool.withdraw(30);
+
+      expect(await nftStakeablePool.totalSupply()).to.equal(90);
+      expect(await underlyingToken.balanceOf(nftStakeablePool.address)).to.equal(90);
+    });
+  });
+
+  describe("addNFT", function () {
+    it("fails to add a new NFT when the NFT does not exists", async function () {
+      await expect(nftStakeablePool.addNFT(2, 10000, "0x0000000000000000000000000000000000000000"))
+        .to.be.revertedWith("RedeemableNFT#_addNFT: NFT doesn't exist");
+    });
+
+    it("succesfully adds a new NFT when the NFT exists", async function () {
+      await nftStakeablePool.addNFT(1, 10000, "0x0000000000000000000000000000000000000000");
+      expect((await nftStakeablePool.nfts(1)).pointsToRedeem).to.equal(10000);
+    });
+
+    it("emits NFTAdded 
