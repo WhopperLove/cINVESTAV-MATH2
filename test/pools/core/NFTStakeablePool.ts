@@ -304,4 +304,25 @@ describe("NFTStakeablePool", function() {
       expect((await nftStakeablePool.nfts(1)).strategy).to.equal("0x0000000000000000000000000000000000000000");
 
       await expect(nftStakeablePool.updateNFTStrategy(1, "0x0000000000000000000000000000000000000001"))
-        .to.emit(
+        .to.emit(nftStakeablePool, 'NFTStrategyUpdated')
+        .withArgs(1, "0x0000000000000000000000000000000000000000", "0x0000000000000000000000000000000000000001");
+
+      expect((await nftStakeablePool.nfts(1)).strategy).to.equal("0x0000000000000000000000000000000000000001");
+    });
+  });
+
+  describe("redeem", function () {
+    let stakerAddress: string;
+    beforeEach(async function () {
+      stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 50000);
+      await underlyingToken.connect(staker).approve(nftStakeablePool.address, 9999999);
+      await nftStakeablePool.connect(staker).stake(10000);
+    });
+
+    it("cannot redeem a non existant NFT", async function () {
+      await expect(nftStakeablePool.redeem(1)).to.be.revertedWith("RedeemableNFT#_redeem: NFT not found");
+    });
+
+    it("cannot redeem when user doesn't have enough points", async function () {
+      await nftStakeablePool.addNFT(1, 10000, "0x00000000000000000000
