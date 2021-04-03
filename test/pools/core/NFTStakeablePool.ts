@@ -325,4 +325,25 @@ describe("NFTStakeablePool", function() {
     });
 
     it("cannot redeem when user doesn't have enough points", async function () {
-      await nftStakeablePool.addNFT(1, 10000, "0x00000000000000000000
+      await nftStakeablePool.addNFT(1, 10000, "0x0000000000000000000000000000000000000000");
+      await expect(nftStakeablePool.redeem(1))
+        .to.be.revertedWith("RedeemableNFT#_redeem: Not enough points to redeem for NFT");
+    });
+
+    it("cannot redeem when all nfts have been minted", async function () {
+      await taconomics.mint("0x0000000000000000000000000000000000000001", 1, 100, []);
+      await nftStakeablePool.addNFT(1, 10000, "0x0000000000000000000000000000000000000000");
+
+      await network.provider.send("evm_increaseTime", [86409]);
+      await network.provider.send("evm_mine");
+
+      await expect(nftStakeablePool.connect(staker).redeem(1))
+        .to.be.revertedWith("RedeemableNFT#_redeem: Max NFTs minted");
+    });
+
+    it("cannot redeem when strategy doesn't allow it", async function () {
+      const redeemStrategy = await (new EvenRedeemStrategyFactory(deployer)).deploy();
+      await redeemStrategy.deployed();
+      await nftStakeablePool.addNFT(1, 10000, redeemStrategy.address);
+
+      await network.provider.send("evm_increaseTime", [86409
