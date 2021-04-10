@@ -42,4 +42,25 @@ describe("StakeableToken", function() {
 
     it("Can stake, after approval and with enough balance", async function () {
       const stakerAddress = await staker.getAddress();
-      await underlyin
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(stakeableTokenWrapper.address, 100);
+      await stakeableTokenWrapper.connect(staker).stake(100);
+
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(100);
+    });
+
+    it("contract balance of underlying has the total staked balance", async function () {
+      const stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(stakeableTokenWrapper.address, 100);
+      await stakeableTokenWrapper.connect(staker).stake(100);
+
+      expect(await stakeableTokenWrapper.balanceOf(stakerAddress)).to.equal(100);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(100);
+
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      const deployerAddress = await deployer.getAddress();
+
+      expect(await sta
