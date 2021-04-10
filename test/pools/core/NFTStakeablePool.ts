@@ -346,4 +346,30 @@ describe("NFTStakeablePool", function() {
       await redeemStrategy.deployed();
       await nftStakeablePool.addNFT(1, 10000, redeemStrategy.address);
 
-      await network.provider.send("evm_increaseTime", [86409
+      await network.provider.send("evm_increaseTime", [86409]);
+      await network.provider.send("evm_mine");
+
+      await expect(nftStakeablePool.connect(staker).redeem(1))
+        .to.be.revertedWith("RedeemableNFT#_redeem: Sender doesn't meet the requirements to mint.");
+    });
+
+    it("can redeem when everything allows it and emits event", async function () {
+      await taconomics.create(2, 0, []);
+
+      const redeemStrategy = await (new EvenRedeemStrategyFactory(deployer)).deploy();
+      await redeemStrategy.deployed();
+      await nftStakeablePool.addNFT(1, 10000, redeemStrategy.address);
+      await nftStakeablePool.addNFT(2, 10000, redeemStrategy.address);
+
+      await network.provider.send("evm_increaseTime", [86409]);
+      await network.provider.send("evm_mine");
+
+      await expect(nftStakeablePool.connect(staker).redeem(2))
+        .to.emit(nftStakeablePool, 'NFTRedeemed')
+        .withArgs(stakerAddress, 10000);
+
+      expect(await nftStakeablePool.points(stakerAddress)).to.equal(1);
+    });
+  });
+
+});
