@@ -63,4 +63,21 @@ describe("StakeableToken", function() {
 
       const deployerAddress = await deployer.getAddress();
 
-      expect(await sta
+      expect(await stakeableTokenWrapper.balanceOf(deployerAddress)).to.equal(120);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(220);
+    });
+
+    it("succesfully updates lastUpdateTime", async function () {
+      const stakerAddress = await staker.getAddress();
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(stakeableTokenWrapper.address, 100);
+
+      expect(await stakeableTokenWrapper.lastUpdateTime(stakerAddress)).to.equal(0);
+      await stakeableTokenWrapper.connect(staker).stake(100);
+      expect(await stakeableTokenWrapper.lastUpdateTime(stakerAddress)).not.to.equal(0);
+    });
+
+    it("cannot stake when strategy returns false", async function () {
+      const neverStakeStrategy = await (new NeverStakeStrategyFactory(deployer)).deploy();
+      const stakerAddress = await staker.getAddress();
+      await stakeableTokenWrapper.setStakeableStrategy(
