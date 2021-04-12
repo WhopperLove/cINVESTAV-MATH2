@@ -127,4 +127,29 @@ describe("StakeableToken", function() {
     });
 
     it("succesfully updates lastUpdateTime", async function () {
-      const deplo
+      const deployerAddress = await deployer.getAddress();
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+
+      expect(await stakeableTokenWrapper.lastUpdateTime(deployerAddress)).to.equal(0);
+
+      await stakeableTokenWrapper.stake(120);
+
+      const lastUpdateTime = await stakeableTokenWrapper.lastUpdateTime(deployerAddress);
+      expect(lastUpdateTime.toNumber()).to.be.greaterThan(0);
+
+      await stakeableTokenWrapper.withdraw(60);
+      expect((await stakeableTokenWrapper.lastUpdateTime(deployerAddress)).toNumber()).to.be.greaterThan(lastUpdateTime.toNumber());
+    });
+  });
+
+  describe("#balanceOf", function() {
+    let stakerAddress: string;
+    let deployerAddress: string;
+
+    beforeEach(async function() {
+      stakerAddress = await staker.getAddress();
+      deployerAddress = await deployer.getAddress();
+    });
+
+    it("is 0 for every new address", async function() {
+      expect(await stakeableTokenWrapper.balanceOf(
