@@ -103,4 +103,28 @@ describe("StakeableToken", function() {
       expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(120);
 
       await stakeableTokenWrapper.withdraw(120);
-      expect(await underlyingToken.balanceOf(stakeableTok
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(0);
+    });
+
+    it("can withdraw less than what was staked", async function() {
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(120);
+
+      await stakeableTokenWrapper.withdraw(60);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(60);
+    });
+
+    it("cannot withdraw more than what was staked", async function() {
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(120);
+
+      await expect(stakeableTokenWrapper.withdraw(200))
+        .to.be.revertedWith("Cannot withdraw more than what's staked.");
+    });
+
+    it("succesfully updates lastUpdateTime", async function () {
+      const deplo
