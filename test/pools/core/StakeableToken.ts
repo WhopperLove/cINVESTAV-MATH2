@@ -80,4 +80,27 @@ describe("StakeableToken", function() {
     it("cannot stake when strategy returns false", async function () {
       const neverStakeStrategy = await (new NeverStakeStrategyFactory(deployer)).deploy();
       const stakerAddress = await staker.getAddress();
-      await stakeableTokenWrapper.setStakeableStrategy(
+      await stakeableTokenWrapper.setStakeableStrategy(neverStakeStrategy.address);
+
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(stakeableTokenWrapper.address, 100);
+
+      await expect(stakeableTokenWrapper.connect(staker).stake(100))
+        .to.be.revertedWith("StakeableToken#_stake: Sender doesn't meet the requirements to stake.");
+    });
+  });
+
+  describe("#withdraw", function() {
+    it("cannot withdraw when nothing is staked", async function() {
+      await expect(stakeableTokenWrapper.withdraw(100))
+        .to.be.revertedWith("Cannot withdraw more than what's staked.");
+    });
+
+    it("can withdraw exactly the same amount that was staked", async function() {
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(120);
+
+      await stakeableTokenWrapper.withdraw(120);
+      expect(await underlyingToken.balanceOf(stakeableTok
