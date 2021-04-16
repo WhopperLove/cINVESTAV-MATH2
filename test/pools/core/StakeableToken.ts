@@ -152,4 +152,24 @@ describe("StakeableToken", function() {
     });
 
     it("is 0 for every new address", async function() {
-      expect(await stakeableTokenWrapper.balanceOf(
+      expect(await stakeableTokenWrapper.balanceOf(stakerAddress)).to.equal(0);
+      expect(await stakeableTokenWrapper.balanceOf(deployerAddress)).to.equal(0);
+    });
+
+    it("balance can be validated after staking", async function () {
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(stakeableTokenWrapper.address, 100);
+      await stakeableTokenWrapper.connect(staker).stake(100);
+
+      expect(await stakeableTokenWrapper.balanceOf(stakerAddress)).to.equal(100);
+    });
+
+    it("balance is correct for different addresses", async function () {
+      await underlyingToken.transfer(stakerAddress, 100);
+      await underlyingToken.connect(staker).approve(stakeableTokenWrapper.address, 100);
+      await stakeableTokenWrapper.connect(staker).stake(100);
+
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      expect(await stakeableTokenWrapper.balanceOf(stakerAddress)).to
