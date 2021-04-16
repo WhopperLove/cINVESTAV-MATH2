@@ -172,4 +172,27 @@ describe("StakeableToken", function() {
       await underlyingToken.approve(stakeableTokenWrapper.address, 120);
       await stakeableTokenWrapper.stake(120);
 
-      expect(await stakeableTokenWrapper.balanceOf(stakerAddress)).to
+      expect(await stakeableTokenWrapper.balanceOf(stakerAddress)).to.equal(100);
+      expect(await stakeableTokenWrapper.balanceOf(deployerAddress)).to.equal(120);
+    });
+  });
+
+  describe("#totalSupply", function() {
+    it("is 0 when nobody has staked", async function() {
+      expect(await stakeableTokenWrapper.totalSupply()).to.equal(0);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(0);
+    });
+
+    it("increases when underlying is staked", async function() {
+      expect(await stakeableTokenWrapper.totalSupply()).to.equal(0);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(0);
+
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      expect(await stakeableTokenWrapper.totalSupply()).to.equal(120);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(120);
+    });
+
+    it("decreases after withdrawal", async function() {
+      expect(await stakeableTokenWrapper.totalSupply()).to.eq
