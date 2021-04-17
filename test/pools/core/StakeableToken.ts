@@ -195,4 +195,19 @@ describe("StakeableToken", function() {
     });
 
     it("decreases after withdrawal", async function() {
-      expect(await stakeableTokenWrapper.totalSupply()).to.eq
+      expect(await stakeableTokenWrapper.totalSupply()).to.equal(0);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(0);
+
+      await underlyingToken.approve(stakeableTokenWrapper.address, 120);
+      await stakeableTokenWrapper.stake(120);
+
+      expect(await stakeableTokenWrapper.totalSupply()).to.equal(120);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(120);
+
+      await stakeableTokenWrapper.withdraw(30);
+
+      expect(await stakeableTokenWrapper.totalSupply()).to.equal(90);
+      expect(await underlyingToken.balanceOf(stakeableTokenWrapper.address)).to.equal(90);
+    });
+  });
+});
