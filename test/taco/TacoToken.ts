@@ -381,3 +381,82 @@ xdescribe("TacoToken contract", function() {
       let newRewardMultiplier: BigNumber;
 
       beforeEach(async function() {
+        await tacoToken.connect(deployer).setCrunchRate(10);
+        await tacoToken.connect(deployer).setRewardForTaquero(2);
+        await tacoToken.connect(deployer).setTacoTuesdayRewardMultiplier(30);
+
+        newCrunchRate = await tacoToken.crunchRate();
+        newRewardForTaquero = await tacoToken.rewardForTaquero();
+        newRewardMultiplier = await tacoToken.rewardMultiplier();
+      });
+
+      it("crunch size is reflective of how long has been since last crunch", async function() {
+        await tacoToken.connect(deployer).unpause();
+        await network.provider.send("evm_increaseTime", [300]);
+        await tacoToken.crunchPool();
+
+        const newSupply = await tacoToken.totalSupply();
+        const newUniswapBalance = await tacoToken.balanceOf(uniswapPoolAddr);
+        const newSigner1Balance = await tacoToken.balanceOf(addr1);
+
+        const unexpectedUniBalDiff = ogUniswapBalance.mul(crunchRate).mul(300).div(100).div(86400);
+        const unexpectedSignerBalDiff = unexpectedUniBalDiff.mul(rewardForTaquero).mul(rewardMultiplier).div(1000);
+        const unexpectedSupplyDiff = unexpectedUniBalDiff.sub(unexpectedSignerBalDiff);
+
+        expect(ogSupply.sub(newSupply)).to.not.be.eq(unexpectedSupplyDiff);
+        expect(ogUniswapBalance.sub(newUniswapBalance)).to.not.be.eq(unexpectedUniBalDiff);
+        expect(newSigner1Balance.sub(ogSigner1Balance)).to.not.be.eq(unexpectedSignerBalDiff);
+
+        const expectedUniBalDiff = ogUniswapBalance.mul(newCrunchRate).mul(300).div(100).div(86400);
+        const expectedSignerBalDiff = expectedUniBalDiff.mul(newRewardForTaquero).mul(newRewardMultiplier).div(1000);
+        const expectedSupplyDiff = expectedUniBalDiff.sub(expectedSignerBalDiff);
+
+        expect(ogSupply.sub(newSupply)).to.be.eq(expectedSupplyDiff);
+        expect(ogUniswapBalance.sub(newUniswapBalance)).to.be.eq(expectedUniBalDiff);
+        expect(newSigner1Balance.sub(ogSigner1Balance)).to.be.eq(expectedSignerBalDiff);
+      });
+
+      it("updates the taquero stats", async function() {
+        await tacoToken.connect(deployer).unpause();
+        await network.provider.send("evm_increaseTime", [300]);
+        await tacoToken.crunchPool();
+
+        const unexpectedUniBalDiff = ogUniswapBalance.mul(crunchRate).mul(300).div(100).div(86400);
+        const unexpectedSignerBalDiff = unexpectedUniBalDiff.mul(rewardForTaquero).mul(rewardMultiplier).div(1000);
+
+        const expectedUniBalDiff = ogUniswapBalance.mul(newCrunchRate).mul(300).div(100).div(86400);
+        const expectedSignerBalDiff = expectedUniBalDiff.mul(newRewardForTaquero).mul(newRewardMultiplier).div(1000);
+
+        const newTaqueroStats = await tacoToken.getTaqueroStats(addr1);
+
+        expect(newTaqueroStats.tacosCrunched).to.not.eq(ogTaqueroStats.tacosCrunched.add(unexpectedSignerBalDiff));
+
+        expect(newTaqueroStats.timesCrunched).to.eq(ogTaqueroStats.timesCrunched.add(1));
+        expect(newTaqueroStats.tacosCrunched).to.eq(ogTaqueroStats.tacosCrunched.add(expectedSignerBalDiff));
+      });
+    });
+  });
+
+  describe("#getCrunchAmount", function() {
+    beforeEach(async function() {
+      tacoToken = tacoToken.connect(signer1);
+    });
+
+    it("returns 0 when the contract is paused", async function() {
+      expect(await tacoToken.getCrunchAmount()).to.equal(0);
+    });
+
+    it("returns 0 when contract is unpaused but no time has passed", async function() {
+      await tacoToken.connect(deployer).unpause();
+      expect(await tacoToken.getCrunchAmount()).to.equal(0);
+    });
+
+    it("returns right amount when some time has passed since last crunch", async function() {
+      await tacoToken.connect(deployer).unpause();
+      await network.provider.send("evm_increaseTime", [300]);
+      await network.provider.send("evm_mine");
+
+      expect(await tacoToken.getCrunchAmount()).to.be.gt(0);
+    });
+  });
+});
