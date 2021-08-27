@@ -1842,4 +1842,23 @@
 
 "@truffle/provider@^0.1.17":
   version "0.1.19"
-  resolved "https://registry.yarnpkg.com/@t
+  resolved "https://registry.yarnpkg.com/@truffle/provider/-/provider-0.1.19.tgz#3e6f15fdd8475ca5d0c846d2b412cc823f1fb767"
+  integrity sha512-ke8iQmzW4Y99+8iff8xQcc+mCNU4AkwtaZ/iSpmVD8qpLytw8/DSNCm0RiEz9/+I93Q1zqI4Jnij/rXnkS2Njw==
+  dependencies:
+    "@truffle/error" "^0.0.7"
+    "@truffle/interface-adapter" "^0.3.0"
+    web3 "1.2.1"
+
+"@typechain/ethers-v4@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@typechain/ethers-v4/-/ethers-v4-1.0.0.tgz#290c8dd31a5ea042f9da44d58c3c17f22550afe6"
+  integrity sha512-tN9XV0ezbLaEuK6jC5gW6AiH4ihq9lMl1ifJr700oBjknKKNDO6jUSzUE56gJzhW/fuyGsb4zsCHwf3JCkBd9w==
+
+"@typechain/truffle-v4@^2.0.2":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@typechain/truffle-v4/-/truffle-v4-2.0.3.tgz#095da3bc5cf1c3bf2f50bc0a6a52fcdab3cfaefd"
+  integrity sha512-MzIWXdsK8AoW18LGLYGut6RqZ2k658yYEnztjTSXwuN90TgXzYoRK37IbmSmq9AQplMvZf2IJD/lRUspET6Z8A==
+
+"@typechain/truffle-v5@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@typechain/truffle-v5/-/truffl
