@@ -5427,4 +5427,26 @@ ethereumjs-account@^2.0.3:
 
 ethereumjs-block@2.2.2, ethereumjs-block@^2.2.0, ethereumjs-block@^2.2.2, ethereumjs-block@~2.2.0, ethereumjs-block@~2.2.2:
   version "2.2.2"
-  r
+  resolved "https://registry.yarnpkg.com/ethereumjs-block/-/ethereumjs-block-2.2.2.tgz#c7654be7e22df489fda206139ecd63e2e9c04965"
+  integrity sha512-2p49ifhek3h2zeg/+da6XpdFR3GlqY3BIEiqxGF8j9aSRIgkb7M1Ky+yULBKJOu8PAZxfhsYA+HxUk2aCQp3vg==
+  dependencies:
+    async "^2.0.1"
+    ethereumjs-common "^1.5.0"
+    ethereumjs-tx "^2.1.1"
+    ethereumjs-util "^5.0.0"
+    merkle-patricia-tree "^2.1.2"
+
+ethereumjs-block@^1.2.2, ethereumjs-block@^1.4.1, ethereumjs-block@^1.6.0:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/ethereumjs-block/-/ethereumjs-block-1.7.1.tgz#78b88e6cc56de29a6b4884ee75379b6860333c3f"
+  integrity sha512-B+sSdtqm78fmKkBq78/QLKJbu/4Ts4P2KFISdgcuZUPDm9x+N7qgBPIIFUGbaakQh8bzuquiRVbdmvPKqbILRg==
+  dependencies:
+    async "^2.0.1"
+    ethereum-common "0.2.0"
+    ethereumjs-tx "^1.2.2"
+    ethereumjs-util "^5.0.0"
+    merkle-patricia-tree "^2.1.2"
+
+ethereumjs-blockchain@^4.0.3:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/ethereumjs-blockchain/-/ethereumjs-blockchain-4.0.4.tgz#30f2
