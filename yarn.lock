@@ -11140,4 +11140,33 @@ svgo@^1.0.0:
 
 swarm-js@0.1.39:
   version "0.1.39"
-  reso
+  resolved "https://registry.yarnpkg.com/swarm-js/-/swarm-js-0.1.39.tgz#79becb07f291d4b2a178c50fee7aa6e10342c0e8"
+  integrity sha512-QLMqL2rzF6n5s50BptyD6Oi0R1aWlJC5Y17SRIVXRj6OR1DRIPM7nepvrxxkjA1zNzFz6mUOMjfeqeDaWB7OOg==
+  dependencies:
+    bluebird "^3.5.0"
+    buffer "^5.0.5"
+    decompress "^4.0.0"
+    eth-lib "^0.1.26"
+    fs-extra "^4.0.2"
+    got "^7.1.0"
+    mime-types "^2.1.16"
+    mkdirp-promise "^5.0.1"
+    mock-fs "^4.1.0"
+    setimmediate "^1.0.5"
+    tar "^4.0.2"
+    xhr-request-promise "^0.1.2"
+
+swarm-js@^0.1.40:
+  version "0.1.40"
+  resolved "https://registry.yarnpkg.com/swarm-js/-/swarm-js-0.1.40.tgz#b1bc7b6dcc76061f6c772203e004c11997e06b99"
+  integrity sha512-yqiOCEoA4/IShXkY3WKwP5PvZhmoOOD8clsKA7EEcRILMkTEYHCQ21HDCAcVpmIxZq4LyZvWeRJ6quIyHk1caA==
+  dependencies:
+    bluebird "^3.5.0"
+    buffer "^5.0.5"
+    eth-lib "^0.1.26"
+    fs-extra "^4.0.2"
+    got "^7.1.0"
+    mime-types "^2.1.16"
+    mkdirp-promise "^5.0.1"
+    mock-fs "^4.1.0"
+    setimmediate "^
