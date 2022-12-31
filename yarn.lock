@@ -11893,4 +11893,30 @@ warning@^4.0.3:
 
 watchpack-chokidar2@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/watchpack-chokidar2/-/watchpack-chokidar2-2.0.0.tgz#9948a1866cbbd6cb824dea13a7ed691f6c8ddf
+  resolved "https://registry.yarnpkg.com/watchpack-chokidar2/-/watchpack-chokidar2-2.0.0.tgz#9948a1866cbbd6cb824dea13a7ed691f6c8ddff0"
+  integrity sha512-9TyfOyN/zLUbA288wZ8IsMZ+6cbzvsNyEzSBp6e/zkifi6xxbl8SmQ/CxQq32k8NNqrdVEVUVSEf56L4rQ/ZxA==
+  dependencies:
+    chokidar "^2.1.8"
+
+watchpack@2.0.0-beta.13:
+  version "2.0.0-beta.13"
+  resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-2.0.0-beta.13.tgz#9d9b0c094b8402139333e04eb6194643c8384f55"
+  integrity sha512-ZEFq2mx/k5qgQwgi6NOm+2ImICb8ngAkA/rZ6oyXZ7SgPn3pncf+nfhYTCrs3lmHwOxnPtGLTOuFLfpSMh1VMA==
+  dependencies:
+    glob-to-regexp "^0.4.1"
+    graceful-fs "^4.1.2"
+
+watchpack@^1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.7.4.tgz#6e9da53b3c80bb2d6508188f5b200410866cd30b"
+  integrity sha512-aWAgTW4MoSJzZPAicljkO1hsi1oKj/RRq/OJQh2PKI2UKL04c2Bs+MBOB+BBABHTXJpf9mCwHN7ANCvYsvY2sg==
+  dependencies:
+    graceful-fs "^4.1.2"
+    neo-async "^2.5.0"
+  optionalDependencies:
+    chokidar "^3.4.1"
+    watchpack-chokidar2 "^2.0.0"
+
+web-vitals@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vi
