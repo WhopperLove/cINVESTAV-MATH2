@@ -12726,4 +12726,32 @@ web3-eth@1.2.4:
 
 web3-eth@1.2.6:
   version "1.2.6"
-  resolved "https://registry.yarnpkg
+  resolved "https://registry.yarnpkg.com/web3-eth/-/web3-eth-1.2.6.tgz#15a8c65fdde0727872848cae506758d302d8d046"
+  integrity sha512-ROWlDPzh4QX6tlGGGlAK6X4kA2n0/cNj/4kb0nNVWkRouGmYO0R8k6s47YxYHvGiXt0s0++FUUv5vAbWovtUQw==
+  dependencies:
+    underscore "1.9.1"
+    web3-core "1.2.6"
+    web3-core-helpers "1.2.6"
+    web3-core-method "1.2.6"
+    web3-core-subscriptions "1.2.6"
+    web3-eth-abi "1.2.6"
+    web3-eth-accounts "1.2.6"
+    web3-eth-contract "1.2.6"
+    web3-eth-ens "1.2.6"
+    web3-eth-iban "1.2.6"
+    web3-eth-personal "1.2.6"
+    web3-net "1.2.6"
+    web3-utils "1.2.6"
+
+web3-net@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/web3-net/-/web3-net-1.2.1.tgz#edd249503315dd5ab4fa00220f6509d95bb7ab10"
+  integrity sha512-Yt1Bs7WgnLESPe0rri/ZoPWzSy55ovioaP35w1KZydrNtQ5Yq4WcrAdhBzcOW7vAkIwrsLQsvA+hrOCy7mNauw==
+  dependencies:
+    web3-core "1.2.1"
+    web3-core-method "1.2.1"
+    web3-utils "1.2.1"
+
+web3-net@1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/web3-net/-/web3-net-1.2.11.tgz#eda68ef25e5cdb64c96c39085c
